@@ -1,0 +1,324 @@
+# Cursor IDE Rules for ReqGate Project
+
+## 🚀 First Time Here?
+
+**Read `START_HERE.md` first!** It provides the complete project context and guides you through the documentation.
+
+## Project Context
+
+This is the ReqGate (Requirement Quality Gate) project - an AI-powered system for automated requirement quality assessment using LangGraph and FastAPI.
+
+## Development Methodology
+
+**Spec-Driven Development**: All features must have a spec before implementation.
+
+### Spec Location
+- All specs are in `.kiro/specs/{feature-name}/`
+- Each spec has: `requirements.md`, `design.md`, `tasks.md`
+
+### Current Phase
+- **Phase 1**: Foundation & Scoring Core (地基与评分核心)
+- Spec: `.kiro/specs/phase-1-foundation-scoring/`
+
+## Code Style & Standards
+
+### Python Version
+- Python 3.14
+
+### Type Safety
+- **ALWAYS** use type annotations for all functions
+- Use `mypy` for type checking
+- Use `from typing import` for complex types
+
+### Schema-Driven
+- **ALL** data must use Pydantic BaseModel
+- **NO** dict for data passing
+- Define schemas in `src/reqgate/schemas/`
+
+### Code Quality Tools
+- **Linter**: `ruff check`
+- **Formatter**: `ruff format`
+- **Type Checker**: `mypy`
+
+### Naming Conventions
+- Files: `snake_case.py`
+- Classes: `PascalCase`
+- Functions: `snake_case()`
+- Constants: `UPPER_SNAKE_CASE`
+- Private: `_leading_underscore`
+
+## Architecture Rules
+
+### Layer Separation
+```
+Application Layer (FastAPI)
+    ↓
+Configuration Layer (Settings)
+    ↓
+Schema Layer (Pydantic)
+    ↓
+Business Logic Layer (Agents, Gates)
+    ↓
+Infrastructure Layer (LLM, DB)
+```
+
+### Dependency Rules
+- Upper layers can depend on lower layers
+- Lower layers CANNOT depend on upper layers
+- Use dependency injection for testability
+
+### Schema Rules
+1. **Input Validation**: Always validate at Schema layer
+2. **No dict**: Use Pydantic models for all data
+3. **Docstrings**: All schemas must have docstrings
+4. **Examples**: Add `Config.json_schema_extra` examples
+
+## Testing Rules
+
+### Test Structure
+- Unit tests: `tests/test_*.py`
+- Integration tests: `tests/test_integration_*.py`
+- E2E tests: `tests/test_e2e_*.py`
+
+### Test Requirements
+- **Coverage**: Core modules > 80%
+- **Mocking**: Mock LLM calls in unit tests
+- **Fixtures**: Use pytest fixtures for common data
+- **Assertions**: Use descriptive assertion messages
+
+### Test Naming
+```python
+def test_{function_name}_{scenario}():
+    """Test description"""
+    # Given
+    # When
+    # Then
+```
+
+## Configuration Rules
+
+### Environment Variables
+- **NEVER** hardcode secrets
+- Use `.env` for local (gitignored)
+- Provide `.env.example` for reference
+- Use `pydantic-settings` for config
+
+### Required Variables
+```bash
+OPENAI_API_KEY=sk-xxx
+REQGATE_ENV=development
+REQGATE_PORT=8000
+LOG_LEVEL=INFO
+```
+
+## Error Handling
+
+### Error Types
+1. **ValidationError**: Schema validation failures
+2. **TimeoutError**: LLM timeout
+3. **RuntimeError**: LLM API errors
+4. **FileNotFoundError**: Config file missing
+
+### Error Handling Pattern
+```python
+try:
+    result = risky_operation()
+except SpecificError as e:
+    logger.error(f"Operation failed: {e}")
+    raise  # or handle appropriately
+```
+
+## Documentation Rules
+
+### Code Documentation
+- **Docstrings**: All public functions and classes
+- **Type hints**: All function parameters and returns
+- **Comments**: Only for complex logic
+
+### Docstring Format
+```python
+def function_name(param: Type) -> ReturnType:
+    """
+    Brief description.
+    
+    Detailed description if needed.
+    
+    Args:
+        param: Parameter description
+    
+    Returns:
+        Return value description
+    
+    Raises:
+        ErrorType: When this error occurs
+    """
+```
+
+## Git Commit Rules
+
+### Commit Message Format
+```
+<type>(<scope>): <subject>
+
+type: feat, fix, docs, style, refactor, test, chore
+scope: module name (e.g., scoring-agent, schema, config)
+subject: brief description (50 chars max)
+```
+
+### Examples
+```
+feat(scoring-agent): implement rubric-based scoring logic
+fix(schema): add missing validation for RequirementPacket
+test(hard-gate): add boundary condition tests
+docs(readme): update setup instructions
+```
+
+## Common Patterns
+
+### Singleton Pattern
+```python
+_instance: Type | None = None
+
+def get_instance() -> Type:
+    global _instance
+    if _instance is None:
+        _instance = Type()
+    return _instance
+```
+
+### Schema Definition
+```python
+from pydantic import BaseModel, Field
+
+class MySchema(BaseModel):
+    """Schema description"""
+    
+    field: str = Field(..., description="Field description")
+    
+    class Config:
+        json_schema_extra = {
+            "example": {"field": "value"}
+        }
+```
+
+### LLM Call Pattern
+```python
+def call_llm(prompt: str) -> OutputSchema:
+    """Call LLM and validate output"""
+    try:
+        response = llm.invoke(prompt)
+        return OutputSchema.model_validate_json(response)
+    except ValidationError as e:
+        logger.error(f"Schema validation failed: {e}")
+        raise
+```
+
+## Forbidden Patterns
+
+### ❌ Don't Do This
+```python
+# ❌ Using dict for data
+def process(data: dict) -> dict:
+    return {"result": data["value"]}
+
+# ❌ No type hints
+def calculate(x, y):
+    return x + y
+
+# ❌ Hardcoded config
+API_KEY = "sk-xxx"
+
+# ❌ Bare except
+try:
+    risky()
+except:
+    pass
+```
+
+### ✅ Do This Instead
+```python
+# ✅ Using Pydantic
+def process(data: InputSchema) -> OutputSchema:
+    return OutputSchema(result=data.value)
+
+# ✅ Type hints
+def calculate(x: int, y: int) -> int:
+    return x + y
+
+# ✅ Config from env
+settings = get_settings()
+api_key = settings.openai_api_key
+
+# ✅ Specific exception
+try:
+    risky()
+except SpecificError as e:
+    logger.error(f"Error: {e}")
+    raise
+```
+
+## Phase 1 Specific Rules
+
+### Current Focus
+- Building foundation and scoring core
+- No LangGraph workflow yet (Phase 2)
+- No HTTP API routes yet (Phase 3)
+- Only `/health` endpoint
+
+### Key Components
+1. **Schemas**: RequirementPacket, TicketScoreReport
+2. **Scoring Agent**: LLM-based scoring
+3. **Hard Gate**: Decision logic
+4. **Rubric**: YAML configuration
+
+### Testing Priority
+1. Schema validation tests
+2. Rubric loader tests
+3. Scoring agent tests (mocked LLM)
+4. Hard gate logic tests
+5. Integration test (end-to-end)
+
+## Quick Commands
+
+```bash
+# Start dev server
+uvicorn src.reqgate.app.main:app --reload --port 8000
+
+# Run tests
+pytest tests/ -v
+
+# Run tests with coverage
+pytest tests/ --cov=src/reqgate --cov-report=html
+
+# Code quality
+ruff check src/ tests/
+ruff format src/ tests/
+mypy src/
+
+# Install dependencies (uv)
+uv pip install -r requirements.txt
+
+# Install dependencies (poetry)
+poetry install
+```
+
+## When to Ask for Help
+
+Ask the user if:
+1. Spec is unclear or contradictory
+2. Need to make architectural decisions
+3. Test is failing repeatedly (>3 times)
+4. Need API keys or credentials
+5. Unsure about Phase boundaries
+
+## Remember
+
+- **Spec First, Code Second**
+- **Schema is Law**
+- **Test Everything**
+- **Type Safety Always**
+- **No Hardcoded Secrets**
+
+---
+
+This project uses Spec-Driven Development. Always check `.kiro/specs/` before implementing features.

@@ -1,0 +1,53 @@
+# Scoring Rubric Configuration v1.0
+# This file defines scoring rules for different requirement types
+
+FEATURE:
+  threshold: 60
+
+  weights:
+    completeness: 0.4
+    logic_closure: 0.3
+    clarity: 0.2
+    dependencies: 0.1
+
+  required_fields:
+    - field: "acceptance_criteria"
+      error_msg: "缺失验收标准 (Acceptance Criteria)。必须定义 'Given/When/Then' 或明确的验证列表。"
+    - field: "user_story"
+      error_msg: "缺失用户故事 (User Story)。必须说明 'As a <User>, I want <Action>, So that <Value>'。"
+
+  negative_patterns:
+    - pattern: "优化体验"
+      severity: "BLOCKER"
+      reason: "模糊词汇。请定义具体的优化指标（如：响应时间 < 1s）。"
+    - pattern: "TBD"
+      severity: "WARNING"
+      reason: "包含待定内容 (TBD)。请确认是否影响开发估时。"
+    - pattern: "待定"
+      severity: "WARNING"
+      reason: "包含待定内容。请确认是否影响开发估时。"
+    - pattern: "可能"
+      severity: "WARNING"
+      reason: "语义模糊。请明确具体行为。"
+
+BUG:
+  threshold: 50
+
+  weights:
+    reproduction: 0.5
+    expected_behavior: 0.3
+    environment: 0.2
+
+  required_fields:
+    - field: "steps_to_reproduce"
+      error_msg: "缺失复现步骤。请列出 1, 2, 3 步骤。"
+    - field: "environment"
+      error_msg: "缺失环境信息 (OS/Browser/AppVersion)。"
+
+  negative_patterns:
+    - pattern: "有时候"
+      severity: "WARNING"
+      reason: "复现条件不明确。请说明具体触发场景。"
+    - pattern: "偶尔"
+      severity: "WARNING"
+      reason: "复现条件不明确。请说明具体触发场景。"

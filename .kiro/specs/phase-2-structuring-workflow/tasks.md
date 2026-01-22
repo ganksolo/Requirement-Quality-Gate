@@ -10,27 +10,27 @@ Estimated Time: 1 Week
 ## 1. Schema Extensions
 
 ### 1.1 Define PRD_Draft Schema
-- [ ] 1.1.1 Extend src/reqgate/schemas/internal.py with PRD_Draft class (file exists from Phase 1)
-- [ ] 1.1.2 Add all required fields (title, user_story, acceptance_criteria, etc.)
-- [ ] 1.1.3 Add validators for title length and format
-- [ ] 1.1.4 Add validators for user_story format
-- [ ] 1.1.5 Add example to schema Config
-- [ ] 1.1.6 Create tests/test_prd_draft_schema.py with validation tests
-- [ ] 1.1.7 Verify Phase 1 tests still pass after schema extension
+- [x] 1.1.1 Extend src/reqgate/schemas/internal.py with PRD_Draft class (file exists from Phase 1)
+- [x] 1.1.2 Add all required fields (title, user_story, acceptance_criteria, etc.)
+- [x] 1.1.3 Add validators for title length and format
+- [x] 1.1.4 Add validators for user_story format
+- [x] 1.1.5 Add example to schema Config
+- [x] 1.1.6 Create tests/test_prd_draft_schema.py with validation tests
+- [x] 1.1.7 Verify Phase 1 tests still pass after schema extension
 
 ### 1.2 Extend AgentState
-- [ ] 1.2.1 Update AgentState in src/reqgate/schemas/internal.py
-- [ ] 1.2.2 Add structured_prd field (Optional[PRD_Draft])
-- [ ] 1.2.3 Add fallback_activated field (bool)
-- [ ] 1.2.4 Add execution_times field (dict[str, float])
-- [ ] 1.2.5 Update schemas/__init__.py to export PRD_Draft
+- [x] 1.2.1 Update AgentState in src/reqgate/schemas/internal.py
+- [x] 1.2.2 Add structured_prd field (Optional[PRD_Draft])
+- [x] 1.2.3 Add fallback_activated field (bool)
+- [x] 1.2.4 Add execution_times field (dict[str, float])
+- [x] 1.2.5 Update schemas/__init__.py to export PRD_Draft
 
 ### 1.3 Define Workflow Configuration Schema
-- [ ] 1.3.1 Extend src/reqgate/schemas/config.py with WorkflowConfig class (file exists, contains RubricScenarioConfig)
-- [ ] 1.3.2 Implement WorkflowConfig class with all configuration fields
-- [ ] 1.3.3 Add configuration fields (enable_guardrail, max_retries, etc.)
-- [ ] 1.3.4 Create tests/test_workflow_config.py
-- [ ] 1.3.5 Update schemas/__init__.py to export WorkflowConfig
+- [x] 1.3.1 Extend src/reqgate/schemas/config.py with WorkflowConfig class (file exists, contains RubricScenarioConfig)
+- [x] 1.3.2 Implement WorkflowConfig class with all configuration fields
+- [x] 1.3.3 Add configuration fields (enable_guardrail, max_retries, etc.)
+- [x] 1.3.4 Create tests/test_workflow_config.py
+- [x] 1.3.5 Update schemas/__init__.py to export WorkflowConfig
 
 ## 2. Input Guardrail
 

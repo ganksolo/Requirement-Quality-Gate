@@ -3,7 +3,6 @@
 from unittest.mock import MagicMock, patch
 
 import pytest
-
 from src.reqgate.agents.scoring import ScoringAgent
 from src.reqgate.gates.decision import HardGate
 from src.reqgate.schemas.inputs import RequirementPacket
@@ -299,8 +298,6 @@ class TestRealLLMIntegration:
     )
     def test_real_llm_scoring(self, sample_requirement):
         """Test with real LLM (requires OPENROUTER_API_KEY in .env)."""
-        from src.reqgate.adapters.llm import get_llm_client
-        from src.reqgate.gates.rules import get_rubric_loader
 
         # Clear singletons for clean test
         import src.reqgate.adapters.llm as llm_module
@@ -318,7 +315,7 @@ class TestRealLLMIntegration:
         assert isinstance(report.blocking_issues, list)
         assert report.summary_markdown is not None
 
-        print(f"\n=== Real LLM Result ===")
+        print("\n=== Real LLM Result ===")
         print(f"Score: {report.total_score}")
         print(f"Ready: {report.ready_for_review}")
         print(f"Blockers: {len(report.blocking_issues)}")

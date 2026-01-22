@@ -41,7 +41,7 @@ class RubricLoader:
         with open(rubric_path, encoding="utf-8") as f:
             self._cache = yaml.safe_load(f)
 
-        return self._cache  # type: ignore
+        return self._cache
 
     def get_scenario_config(self, ticket_type: str) -> RubricScenarioConfig:
         """

@@ -122,7 +122,7 @@ Estimated Time: 1 Week
 ### 8.2 Code Quality
 - [x] 8.2.1 Run ruff check and fix all issues
 - [x] 8.2.2 Run ruff format on all code
-- [ ] 8.2.3 Run mypy and fix type errors
+- [x] 8.2.3 Run mypy and fix type errors
 - [x] 8.2.4 Ensure all tests pass with pytest
 
 ### 8.3 Documentation
@@ -134,12 +134,12 @@ Estimated Time: 1 Week
 ## 9. Milestone Verification
 
 ### 9.1 Milestone T1: The First Reject
-- [ ] 9.1.1 Prepare a bad requirement sample (missing AC)
-- [ ] 9.1.2 Create test script to run complete flow
-- [ ] 9.1.3 Verify score < 60
-- [ ] 9.1.4 Verify blocking_issues contains MISSING_AC
-- [ ] 9.1.5 Verify Hard Gate returns REJECT
-- [ ] 9.1.6 Document test results
+- [x] 9.1.1 Prepare a bad requirement sample (missing AC)
+- [x] 9.1.2 Create test script to run complete flow
+- [x] 9.1.3 Verify score < 60
+- [x] 9.1.4 Verify blocking_issues contains MISSING_AC
+- [x] 9.1.5 Verify Hard Gate returns REJECT
+- [x] 9.1.6 Document test results
 
 ## Task Dependencies
 

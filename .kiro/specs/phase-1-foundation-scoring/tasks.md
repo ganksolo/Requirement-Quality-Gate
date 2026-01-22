@@ -114,10 +114,10 @@ Estimated Time: 1 Week
 ## 8. Integration & Testing
 
 ### 8.1 Integration Tests
-- [ ] 8.1.1 Create tests/test_integration.py
-- [ ] 8.1.2 Implement end-to-end test with mocked LLM
-- [ ] 8.1.3 Test complete flow: Input → Scoring → Gate
-- [ ]*8.1.4 Add real LLM integration test (optional, requires API key)
+- [x] 8.1.1 Create tests/test_integration.py
+- [x] 8.1.2 Implement end-to-end test with mocked LLM
+- [x] 8.1.3 Test complete flow: Input → Scoring → Gate
+- [x]*8.1.4 Add real LLM integration test (optional, requires API key)
 
 ### 8.2 Code Quality
 - [x] 8.2.1 Run ruff check and fix all issues

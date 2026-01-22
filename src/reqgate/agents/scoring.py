@@ -39,10 +39,7 @@ class ScoringAgent:
         prompt = self._build_prompt(packet, config)
 
         # 3. Call LLM
-        llm_response = self.llm.invoke(
-            prompt=prompt,
-            response_schema=TicketScoreReport,
-        )
+        llm_response = self.llm.invoke(prompt, TicketScoreReport)
 
         # 4. Parse and validate output
         report = TicketScoreReport.model_validate_json(llm_response)
@@ -69,26 +66,45 @@ Priority: {priority}
 Content:
 {raw_text}
 
-# Scoring Rubric
-Required Fields: {required_fields}
-Negative Patterns: {negative_patterns}
-
 # Blocking Rules
 You must mark an issue as **BLOCKER** if:
-1. Missing any required field
-2. Contains ambiguous words without quantitative metrics
+1. Missing acceptance criteria (验收标准)
+2. Contains ambiguous words like "better", "fast", "nice" without metrics
 3. Logic flow is incomplete
 
-# Output Format
-Produce a JSON matching the TicketScoreReport schema with:
-- total_score: 0-100
-- ready_for_review: true/false based on threshold
-- dimension_scores: breakdown by weights
-- blocking_issues: fatal errors (array of ReviewIssue)
-- non_blocking_issues: suggestions (array of ReviewIssue)
-- summary_markdown: concise summary for PM
+# Output Format (STRICT JSON)
+You MUST return a JSON object exactly matching this structure:
 
-Be objective and direct. Provide actionable advice.
+{{
+  "total_score": 75,
+  "ready_for_review": true,
+  "dimension_scores": {{"completeness": 80, "logic": 70, "clarity": 75}},
+  "blocking_issues": [
+    {{
+      "severity": "BLOCKER",
+      "category": "MISSING_AC",
+      "description": "缺少验收标准",
+      "suggestion": "请添加 Given/When/Then 格式的验收标准"
+    }}
+  ],
+  "non_blocking_issues": [
+    {{
+      "severity": "WARNING",
+      "category": "AMBIGUITY",
+      "description": "描述不够清晰",
+      "suggestion": "请明确具体行为"
+    }}
+  ],
+  "summary_markdown": "## 评分结果\\n\\n总分: 75/100"
+}}
+
+IMPORTANT:
+- severity MUST be "BLOCKER" or "WARNING"
+- category MUST be one of: "MISSING_AC", "AMBIGUITY", "LOGIC_GAP", "SECURITY", "MISSING_FIELD"
+- If no issues, use empty arrays: []
+- ready_for_review is true if total_score >= {threshold} AND blocking_issues is empty
+
+Be objective and direct. Provide actionable advice in Chinese.
 """
 
         scenario = "BUG" if packet.ticket_type == "Bug" else "FEATURE"
@@ -101,6 +117,4 @@ Be objective and direct. Provide actionable advice.
             project_key=packet.project_key,
             priority=packet.priority,
             raw_text=packet.raw_text,
-            required_fields=config.get("required_fields", []),
-            negative_patterns=config.get("negative_patterns", []),
         )

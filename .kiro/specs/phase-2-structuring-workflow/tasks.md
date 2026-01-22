@@ -85,19 +85,19 @@ Estimated Time: 1 Week
 ## 4. LLM Retry Logic
 
 ### 4.1 Extend LLM Adapter
-- [ ] 4.1.1 Check if tenacity is already a dependency, add to pyproject.toml if not
-- [ ] 4.1.2 Extend src/reqgate/adapters/llm.py (keep existing LLMClient unchanged)
-- [ ] 4.1.3 Implement call_llm_with_retry function
-- [ ] 4.1.4 Add exponential backoff configuration
-- [ ] 4.1.5 Add timeout handling
-- [ ] 4.1.6 Add rate limit handling
-- [ ] 4.1.7 Create tests/test_llm_retry.py
-- [ ] 4.1.8 Verify Phase 1 LLM tests still pass
+- [x] 4.1.1 Check if tenacity is already a dependency, add to pyproject.toml if not
+- [x] 4.1.2 Extend src/reqgate/adapters/llm.py (keep existing LLMClient unchanged)
+- [x] 4.1.3 Implement call_llm_with_retry function
+- [x] 4.1.4 Add exponential backoff configuration
+- [x] 4.1.5 Add timeout handling
+- [x] 4.1.6 Add rate limit handling
+- [x] 4.1.7 Create tests/test_llm_retry.py
+- [x] 4.1.8 Verify Phase 1 LLM tests still pass
 
 ### 4.2 Define LLM Error Types
-- [ ] 4.2.1 Create LLMTimeoutError in src/reqgate/workflow/errors.py
-- [ ] 4.2.2 Create LLMRateLimitError
-- [ ] 4.2.3 Add error logging
+- [x] 4.2.1 Create LLMTimeoutError in src/reqgate/workflow/errors.py (already created in Section 2)
+- [x] 4.2.2 Create LLMRateLimitError (already created in Section 2)
+- [x] 4.2.3 Add error logging
 
 ## 5. LangGraph Workflow
 

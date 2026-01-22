@@ -59,11 +59,11 @@ inclusion: always
    - Scoring Agent 单元测试
    - Hard Gate 逻辑测试
 
-### 验收标准 (Milestone T1)
-- [ ] 输入一段文本，返回 JSON 格式的评分报告
-- [ ] 缺少 AC 的需求被正确识别为 BLOCKER
-- [ ] 分数 < 60 的需求被 Hard Gate 拦截
-- [ ] 所有测试通过
+### 验收标准 (Milestone T1) ✅
+- [x] 输入一段文本，返回 JSON 格式的评分报告
+- [x] 缺少 AC 的需求被正确识别为 BLOCKER
+- [x] 分数 < 60 的需求被 Hard Gate 拦截
+- [x] 所有测试通过
 
 ### 不包含的内容
 - ❌ Structuring Agent（Phase 2）
@@ -302,17 +302,20 @@ Phase 4 (Week 4+)
 ### 共享配置
 - `.env.example`
 - `pyproject.toml`
-- `scoring_rubric.yaml`
+- `config/scoring_rubric.yaml`
+- `config/guardrail_config.yaml` (Phase 2+)
 
 ### 共享文档
 - `docs/architecture.md`
 - `docs/schemas.md`
 - `docs/workflow.md`
+- `prompts/` (Phase 2+)
 
 ### 共享代码
 - `src/reqgate/schemas/` (Phase 1 定义，后续扩展)
 - `src/reqgate/config/` (Phase 1 定义，后续扩展)
-- `src/reqgate/adapters/llm.py` (Phase 1 定义，Phase 2 使用)
+- `src/reqgate/adapters/llm.py` (Phase 1 定义，Phase 2 扩展 retry 逻辑)
+- `src/reqgate/workflow/` (Phase 2 新增)
 
 ---
 
@@ -355,8 +358,9 @@ Phase 4 (Week 4+)
 
 1. **如果项目刚开始** → 创建 Phase 1 Spec
 2. **如果 Phase 1 Spec 已创建** → 执行 Phase 1 任务
-3. **如果 Phase 1 已完成** → 验收 Milestone T1，然后创建 Phase 2 Spec
-4. **如果所有 Phase 完成** → 进入维护模式，处理 Bug 和优化
+3. **如果 Phase 1 已完成** → 验收 Milestone T1，然后创建 Phase 2 Spec ✅ 当前状态
+4. **如果 Phase 2 Spec 已创建** → 执行 Phase 2 任务 👉 **执行此步**
+5. **如果所有 Phase 完成** → 进入维护模式，处理 Bug 和优化
 
 ### 如何判断 Phase 是否完成？
 

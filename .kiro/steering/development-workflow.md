@@ -151,6 +151,14 @@ GEMINI_API_KEY=xxx
 
 # Database (Phase 4)
 DATABASE_URL=postgresql://localhost/reqgate
+
+# Phase 2 Configuration
+ENABLE_STRUCTURING=true
+ENABLE_GUARDRAIL=true
+GUARDRAIL_MODE=lenient
+MAX_LLM_RETRIES=3
+STRUCTURING_TIMEOUT=20
+GUARDRAIL_CONFIG_PATH=config/guardrail_config.yaml
 ```
 
 #### 配置优先级

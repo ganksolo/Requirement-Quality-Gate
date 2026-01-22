@@ -24,8 +24,9 @@ inclusion: always
 ### 开始工作前
 1. **.kiro/steering/development-workflow.md** - 开发流程
 2. **.kiro/steering/schema-driven-rules.md** - Schema 规则
-3. **.kiro/specs/phase-1-foundation-scoring/requirements.md** - 当前需求
-4. **.kiro/specs/phase-1-foundation-scoring/design.md** - 设计文档
+3. **当前 Phase 的 Spec**:
+   - Phase 1: `.kiro/specs/phase-1-foundation-scoring/`
+   - Phase 2: `.kiro/specs/phase-2-structuring-workflow/`
 
 ## 🚦 工作流程
 
@@ -67,11 +68,21 @@ inclusion: always
 
 ## 📋 当前任务
 
-### Phase 1: Foundation & Scoring Core
+### Phase 1: Foundation & Scoring Core ✅
+
+**状态**: 已完成
 
 **Spec 位置**: `.kiro/specs/phase-1-foundation-scoring/`
 
-**任务清单**: `tasks.md`（35 个任务）
+**Milestone T1**: 已验证通过
+
+---
+
+### Phase 2: Structuring & Workflow (当前)
+
+**Spec 位置**: `.kiro/specs/phase-2-structuring-workflow/`
+
+**任务清单**: `tasks.md`（47 个任务）
 
 **下一步**:
 1. 打开 `tasks.md`
@@ -240,24 +251,28 @@ except SpecificError as e:
     raise
 ```
 
-## 🎯 Phase 1 重点
+## 🎯 当前 Phase 状态
 
-### 当前 Phase
-- **Phase 1**: Foundation & Scoring Core
+### Phase 1: Foundation & Scoring Core ✅
+- **状态**: 已完成
+- **任务数**: 35 个（全部完成）
+- **Milestone T1**: 已验证通过
+
+### Phase 2: Structuring & Workflow (当前)
 - **状态**: Spec 已创建，待实施
-- **任务数**: 35 个（32 必需 + 3 可选）
+- **任务数**: 47 个（43 必需 + 4 可选）
 
-### 关键组件
-1. **Schemas**: RequirementPacket, TicketScoreReport
-2. **Scoring Agent**: LLM-based scoring
-3. **Hard Gate**: Decision logic
-4. **Rubric**: YAML configuration
+### 关键组件 (Phase 2)
+1. **PRD_Draft Schema**: 结构化 PRD 草稿
+2. **Structuring Agent**: 非结构化 → 结构化转换
+3. **Input Guardrail**: 输入验证和防护
+4. **LangGraph Workflow**: 完整工作流编排
+5. **Fallback Mechanism**: 容错降级逻辑
 
-### 不包含的内容（Phase 2+）
-- ❌ Structuring Agent
-- ❌ LangGraph workflow
-- ❌ FastAPI routes (除了 /health)
+### 不包含的内容（Phase 3+）
+- ❌ HTTP API routes
 - ❌ Jira/n8n integration
+- ❌ Database persistence
 
 ## 🆘 遇到问题？
 
@@ -338,10 +353,17 @@ except SpecificError as e:
 - [ ] 更新了任务状态
 - [ ] 添加了必要的注释
 
-### Phase 1 完成标准
-- [ ] 所有 REQUIRED 任务完成
-- [ ] Milestone T1 验收通过
-- [ ] 测试覆盖率 > 80%
+### Phase 1 完成标准 ✅
+- [x] 所有 REQUIRED 任务完成
+- [x] Milestone T1 验收通过
+- [x] 测试覆盖率 > 80%
+- [x] 文档更新完整
+
+### Phase 2 完成标准
+- [ ] 所有 REQUIRED 任务完成 (43 个)
+- [ ] Milestone T2 验收通过（End-to-End Workflow）
+- [ ] Milestone T2.1 验收通过（Degradation Test）
+- [ ] Phase 1 所有 82 个测试仍然通过
 - [ ] 文档更新完整
 
 ## 🔄 工作循环
@@ -393,7 +415,7 @@ except SpecificError as e:
 
 ---
 
-**准备好了吗？开始执行 Phase 1 任务吧！** 🚀
+**准备好了吗？开始执行 Phase 2 任务吧！** 🚀
 
-Last Updated: 2025-01-21
-Current Phase: Phase 1 (Foundation & Scoring Core)
+Last Updated: 2026-01-22
+Current Phase: Phase 2 (Structuring & Workflow)

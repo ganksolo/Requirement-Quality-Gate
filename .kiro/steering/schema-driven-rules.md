@@ -146,20 +146,28 @@ class AgentState(TypedDict):
     # 输入
     packet: RequirementPacket
     
-    # 中间产物
-    structured_prd: Optional[PRD_Draft]
+    # 中间产物 (Phase 1)
     score_report: Optional[TicketScoreReport]
+    
+    # 中间产物 (Phase 2+)
+    structured_prd: Optional[PRD_Draft]
+    gate_decision: Optional[bool]
     
     # 流程控制
     retry_count: int
     error_logs: List[str]
     current_stage: str
+    
+    # Phase 2 新增
+    fallback_activated: bool
+    execution_times: dict[str, float]  # node_name -> seconds
 ```
 
 **规则**：
 - 使用 `TypedDict` 定义 LangGraph State
 - 所有节点只读写 State，不直接调用其他节点
 - State 必须包含流程控制字段
+- 扩展 State 时保持向后兼容（新字段用 Optional 或默认值）
 
 ## 3. Schema 验证规则
 

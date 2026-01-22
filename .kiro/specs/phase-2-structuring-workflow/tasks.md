@@ -131,19 +131,19 @@ Estimated Time: 1 Week
 ## 6. Fallback Mechanism
 
 ### 6.1 Implement Fallback Logic
-- [ ] 6.1.1 Update scoring_agent_node to detect missing structured_prd
-- [ ] 6.1.2 Implement format_prd_for_scoring() helper
-- [ ] 6.1.3 Implement fallback mode (use raw_text)
-- [ ] 6.1.4 Set fallback_activated flag
-- [ ] 6.1.5 Log fallback activation
-- [ ] 6.1.6 Apply score penalty for fallback mode
+- [x] 6.1.1 Update scoring_agent_node to detect missing structured_prd (done in Section 5)
+- [x] 6.1.2 Implement format_prd_for_scoring() helper (done in Section 5)
+- [x] 6.1.3 Implement fallback mode (use raw_text) (done in Section 5)
+- [x] 6.1.4 Set fallback_activated flag (done in Section 5)
+- [x] 6.1.5 Log fallback activation (done in Section 5)
+- [x] 6.1.6 Apply score penalty for fallback mode (-5 points)
 
 ### 6.2 Fallback Tests
-- [ ] 6.2.1 Create tests/test_fallback.py
-- [ ] 6.2.2 Test fallback activation on structuring failure
-- [ ] 6.2.3 Test scoring continues with raw text
-- [ ] 6.2.4 Test fallback flag is set correctly
-- [ ] 6.2.5 Test score penalty is applied
+- [x] 6.2.1 Create tests/test_fallback.py
+- [x] 6.2.2 Test fallback activation on structuring failure
+- [x] 6.2.3 Test scoring continues with raw text
+- [x] 6.2.4 Test fallback flag is set correctly
+- [x] 6.2.5 Test score penalty is applied
 
 ## 7. Integration & Testing
 

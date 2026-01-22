@@ -4,6 +4,7 @@ import os
 from unittest.mock import patch
 
 import pytest
+
 from src.reqgate.config.settings import Settings, get_settings
 
 
@@ -18,9 +19,10 @@ class TestSettings:
             assert settings.reqgate_env == "development"
             assert settings.reqgate_port == 8000
             assert settings.log_level == "INFO"
-            assert settings.openai_model == "gpt-4o"
-            assert settings.openai_timeout == 30
+            assert settings.llm_model == "openai/gpt-4o"
+            assert settings.llm_timeout == 60
             assert settings.default_threshold == 60
+            assert settings.openrouter_base_url == "https://openrouter.ai/api/v1"
 
     def test_environment_override(self):
         """Test that environment variables override defaults."""
@@ -28,8 +30,8 @@ class TestSettings:
             "REQGATE_ENV": "production",
             "REQGATE_PORT": "9000",
             "LOG_LEVEL": "DEBUG",
-            "OPENAI_API_KEY": "sk-test-key",
-            "OPENAI_MODEL": "gpt-4",
+            "OPENROUTER_API_KEY": "sk-or-test-key",
+            "LLM_MODEL": "deepseek/deepseek-chat",
         }
         with patch.dict(os.environ, env_vars, clear=True):
             settings = Settings()
@@ -37,8 +39,8 @@ class TestSettings:
             assert settings.reqgate_env == "production"
             assert settings.reqgate_port == 9000
             assert settings.log_level == "DEBUG"
-            assert settings.openai_api_key == "sk-test-key"
-            assert settings.openai_model == "gpt-4"
+            assert settings.openrouter_api_key == "sk-or-test-key"
+            assert settings.llm_model == "deepseek/deepseek-chat"
 
     def test_is_development_property(self):
         """Test is_development property."""
@@ -65,6 +67,22 @@ class TestSettings:
         with patch.dict(os.environ, {"LOG_LEVEL": "INVALID"}, clear=True):
             with pytest.raises(ValueError):
                 Settings()
+
+    def test_fallback_models_list(self):
+        """Test fallback_models_list property."""
+        with patch.dict(
+            os.environ,
+            {"LLM_FALLBACK_MODELS": "model1,model2,model3"},
+            clear=True,
+        ):
+            settings = Settings()
+            assert settings.fallback_models_list == ["model1", "model2", "model3"]
+
+    def test_fallback_models_empty(self):
+        """Test fallback_models_list when empty."""
+        with patch.dict(os.environ, {"LLM_FALLBACK_MODELS": ""}, clear=True):
+            settings = Settings()
+            assert settings.fallback_models_list == []
 
 
 class TestGetSettings:

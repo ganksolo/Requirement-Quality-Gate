@@ -21,14 +21,14 @@ class Settings(BaseSettings):
     reqgate_port: int = 8000
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
 
-    # OpenAI settings
-    openai_api_key: str = ""
-    openai_model: str = "gpt-4o"
-    openai_timeout: int = 30
+    # OpenRouter settings (unified LLM gateway)
+    openrouter_api_key: str = ""
+    openrouter_base_url: str = "https://openrouter.ai/api/v1"
 
-    # Gemini settings (optional)
-    gemini_api_key: str = ""
-    gemini_model: str = "gemini-1.5-pro"
+    # LLM Model settings
+    llm_model: str = "openai/gpt-4o"
+    llm_timeout: int = 60
+    llm_fallback_models: str = "deepseek/deepseek-chat,google/gemini-2.0-flash-001"
 
     # Scoring settings
     rubric_file_path: str = "config/scoring_rubric.yaml"
@@ -44,8 +44,16 @@ class Settings(BaseSettings):
         """Check if running in production mode."""
         return self.reqgate_env == "production"
 
+    @property
+    def fallback_models_list(self) -> list[str]:
+        """Get fallback models as a list."""
+        if not self.llm_fallback_models:
+            return []
+        return [m.strip() for m in self.llm_fallback_models.split(",")]
+
 
 @lru_cache
 def get_settings() -> Settings:
     """Get cached settings instance."""
     return Settings()
+

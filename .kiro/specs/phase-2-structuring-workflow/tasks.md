@@ -172,20 +172,20 @@ Estimated Time: 1 Week
 ## 8. Configuration & Documentation
 
 ### 8.1 Configuration Updates
-- [ ] 8.1.1 Update .env.example with Phase 2 variables
-- [ ] 8.1.2 Extend src/reqgate/config/settings.py (keep existing fields unchanged)
-- [ ] 8.1.3 Add enable_structuring setting with default True
-- [ ] 8.1.4 Add enable_guardrail setting with default True
-- [ ] 8.1.5 Add max_llm_retries setting with default 3
-- [ ] 8.1.6 Add structuring_timeout setting with default 20
-- [ ] 8.1.7 Add guardrail_config_path setting
-- [ ] 8.1.8 Verify Phase 1 settings tests still pass
+- [x] 8.1.1 Update .env.example with Phase 2 variables
+- [x] 8.1.2 Extend src/reqgate/config/settings.py (keep existing fields unchanged)
+- [x] 8.1.3 Add enable_structuring setting with default True
+- [x] 8.1.4 Add enable_guardrail setting with default True
+- [x] 8.1.5 Add max_llm_retries setting with default 3
+- [x] 8.1.6 Add structuring_timeout setting with default 20
+- [x] 8.1.7 Add guardrail_config_path setting
+- [x] 8.1.8 Verify Phase 1 settings tests still pass
 
 ### 8.2 Documentation
-- [ ] 8.2.1 Update docs/architecture.md with workflow diagram
-- [ ] 8.2.2 Update docs/workflow.md with LangGraph details
-- [ ] 8.2.3 Create docs/prompts.md documenting prompt templates
-- [ ] 8.2.4 Update README.md with Phase 2 features
+- [x] 8.2.1 Update docs/architecture.md with workflow diagram
+- [x] 8.2.2 Update docs/workflow.md with LangGraph details
+- [x] 8.2.3 Create docs/prompts.md documenting prompt templates
+- [x] 8.2.4 Update README.md with Phase 2 features
 
 ## 9. Milestone Verification
 

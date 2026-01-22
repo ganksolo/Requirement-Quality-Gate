@@ -34,6 +34,14 @@ class Settings(BaseSettings):
     rubric_file_path: str = "config/scoring_rubric.yaml"
     default_threshold: int = 60
 
+    # Phase 2: Workflow Configuration
+    enable_structuring: bool = True
+    enable_guardrail: bool = True
+    guardrail_mode: Literal["strict", "lenient"] = "lenient"
+    max_llm_retries: int = 3
+    structuring_timeout: int = 20
+    guardrail_config_path: str = "config/guardrail_config.yaml"
+
     @property
     def is_development(self) -> bool:
         """Check if running in development mode."""

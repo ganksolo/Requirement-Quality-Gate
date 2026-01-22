@@ -35,52 +35,52 @@ Estimated Time: 1 Week
 ## 2. Input Guardrail
 
 ### 2.1 Create Guardrail Configuration
-- [ ] 2.1.1 Create config/guardrail_config.yaml
-- [ ] 2.1.2 Define length constraints (min_length, max_length)
-- [ ] 2.1.3 Define PII detection patterns
-- [ ] 2.1.4 Define prompt injection patterns
-- [ ] 2.1.5 Add configuration modes (strict/lenient)
+- [x] 2.1.1 Create config/guardrail_config.yaml
+- [x] 2.1.2 Define length constraints (min_length, max_length)
+- [x] 2.1.3 Define PII detection patterns
+- [x] 2.1.4 Define prompt injection patterns
+- [x] 2.1.5 Add configuration modes (strict/lenient)
 
 ### 2.2 Implement Guardrail Logic
-- [ ] 2.2.1 Create src/reqgate/workflow/__init__.py
-- [ ] 2.2.2 Create src/reqgate/workflow/nodes/__init__.py
-- [ ] 2.2.3 Create src/reqgate/workflow/nodes/input_guardrail.py
-- [ ] 2.2.4 Implement length validation
-- [ ] 2.2.5 Implement PII detection (regex-based)
-- [ ] 2.2.6 Implement prompt injection detection
-- [ ] 2.2.7 Implement guardrail configuration loader
-- [ ] 2.2.8 Create tests/test_input_guardrail.py
+- [x] 2.2.1 Create src/reqgate/workflow/__init__.py
+- [x] 2.2.2 Create src/reqgate/workflow/nodes/__init__.py
+- [x] 2.2.3 Create src/reqgate/workflow/nodes/input_guardrail.py
+- [x] 2.2.4 Implement length validation
+- [x] 2.2.5 Implement PII detection (regex-based)
+- [x] 2.2.6 Implement prompt injection detection
+- [x] 2.2.7 Implement guardrail configuration loader
+- [x] 2.2.8 Create tests/test_input_guardrail.py
 
 ### 2.3 Guardrail Error Handling
-- [ ] 2.3.1 Define GuardrailRejectionError in src/reqgate/workflow/errors.py
-- [ ] 2.3.2 Implement error logging
-- [ ] 2.3.3 Add tests for rejection scenarios
+- [x] 2.3.1 Define GuardrailRejectionError in src/reqgate/workflow/errors.py
+- [x] 2.3.2 Implement error logging
+- [x] 2.3.3 Add tests for rejection scenarios
 
 ## 3. Structuring Agent
 
 ### 3.1 Create Prompt Template
-- [ ] 3.1.1 Create prompts/ directory
-- [ ] 3.1.2 Create prompts/structuring_agent_v1.txt
-- [ ] 3.1.3 Write anti-hallucination instructions
-- [ ] 3.1.4 Add extraction guidelines
-- [ ] 3.1.5 Add example output
+- [x] 3.1.1 Create prompts/ directory
+- [x] 3.1.2 Create prompts/structuring_agent_v1.txt
+- [x] 3.1.3 Write anti-hallucination instructions
+- [x] 3.1.4 Add extraction guidelines
+- [x] 3.1.5 Add example output
 
 ### 3.2 Implement Structuring Agent
-- [ ] 3.2.1 Create src/reqgate/workflow/nodes/structuring_agent.py
-- [ ] 3.2.2 Implement prompt loading and formatting
-- [ ] 3.2.3 Implement LLM call with PRD_Draft schema
-- [ ] 3.2.4 Implement output validation
-- [ ] 3.2.5 Implement anti-hallucination validation
-- [ ] 3.2.6 Add error handling for LLM failures
-- [ ] 3.2.7 Create tests/test_structuring_agent.py
+- [x] 3.2.1 Create src/reqgate/workflow/nodes/structuring_agent.py
+- [x] 3.2.2 Implement prompt loading and formatting
+- [x] 3.2.3 Implement LLM call with PRD_Draft schema
+- [x] 3.2.4 Implement output validation
+- [x] 3.2.5 Implement anti-hallucination validation
+- [x] 3.2.6 Add error handling for LLM failures
+- [x] 3.2.7 Create tests/test_structuring_agent.py
 
 ### 3.3 Structuring Agent Tests
-- [ ] 3.3.1 Test extraction from well-formatted text
-- [ ] 3.3.2 Test extraction from messy meeting transcript
-- [ ] 3.3.3 Test handling of missing AC
-- [ ] 3.3.4 Test missing_info detection
-- [ ] 3.3.5 Test clarification_questions generation
-- [ ] 3.3.6 Test anti-hallucination (no invented content)
+- [x] 3.3.1 Test extraction from well-formatted text
+- [x] 3.3.2 Test extraction from messy meeting transcript
+- [x] 3.3.3 Test handling of missing AC
+- [x] 3.3.4 Test missing_info detection
+- [x] 3.3.5 Test clarification_questions generation
+- [x] 3.3.6 Test anti-hallucination (no invented content)
 
 ## 4. LLM Retry Logic
 

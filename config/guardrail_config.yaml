@@ -1,0 +1,48 @@
+# Input Guardrail Configuration
+# This file defines the rules for input validation before processing
+
+input_guardrail:
+  # Length constraints
+  min_length: 50      # Minimum input text length (characters)
+  max_length: 10000   # Maximum input text length (characters)
+
+  # PII (Personally Identifiable Information) Detection
+  pii_detection:
+    enabled: true
+    mode: "lenient"   # strict | lenient
+    # In strict mode: reject inputs containing PII
+    # In lenient mode: log warning but continue processing
+    patterns:
+      email: true           # Detect email addresses
+      phone: true           # Detect phone numbers
+      credit_card: false    # Detect credit card numbers (disabled by default)
+      ssn: false            # Detect social security numbers (disabled by default)
+
+  # Prompt Injection Detection
+  prompt_injection:
+    enabled: true
+    action: "reject"  # reject | sanitize | warn
+    # reject: block the input entirely
+    # sanitize: remove suspicious patterns and continue
+    # warn: log warning and continue
+    patterns:
+      - "ignore previous instructions"
+      - "ignore all previous"
+      - "disregard all previous"
+      - "forget everything"
+      - "you are now"
+      - "act as"
+      - "pretend to be"
+      - "system prompt"
+      - "reveal your instructions"
+      - "show me your prompt"
+      - "what are your instructions"
+      - "bypass"
+      - "jailbreak"
+      - "DAN mode"
+      - "developer mode"
+
+  # Guardrail Mode
+  # strict: reject on any validation failure
+  # lenient: only reject on critical issues (length, prompt injection)
+  default_mode: "lenient"

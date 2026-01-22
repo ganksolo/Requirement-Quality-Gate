@@ -1,9 +1,4 @@
-"""
-Internal schemas for agent state and workflow.
-
-These schemas are used internally and not exposed via API.
-Phase 1: Placeholder - Full implementation in later tasks.
-"""
+"""Internal state schemas for workflow management."""
 
 from typing import TypedDict
 
@@ -13,10 +8,10 @@ from src.reqgate.schemas.outputs import TicketScoreReport
 
 class AgentState(TypedDict):
     """
-    Agent workflow state.
+    LangGraph workflow state.
 
-    Used by LangGraph to manage workflow state.
-    Phase 1 doesn't use LangGraph yet, but we define the state for future use.
+    This TypedDict defines the state passed between nodes
+    in the LangGraph workflow.
     """
 
     # Input

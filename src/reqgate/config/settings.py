@@ -1,4 +1,4 @@
-"""Application settings loaded from environment variables."""
+"""Application settings module."""
 
 from functools import lru_cache
 from typing import Literal
@@ -7,30 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    """
-    Application configuration.
-
-    All settings are loaded from environment variables.
-    Use .env file for local development.
-    """
-
-    # Application
-    reqgate_env: Literal["development", "staging", "production"] = "development"
-    reqgate_port: int = 8000
-    log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
-
-    # OpenAI LLM
-    openai_api_key: str = ""
-    openai_model: str = "gpt-4o"
-    openai_timeout: int = 30
-
-    # Gemini LLM (optional)
-    gemini_api_key: str = ""
-    gemini_model: str = "gemini-pro"
-
-    # Scoring
-    rubric_file_path: str = "config/scoring_rubric.yaml"
-    default_threshold: int = 60
+    """Application settings loaded from environment variables."""
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -38,6 +15,24 @@ class Settings(BaseSettings):
         case_sensitive=False,
         extra="ignore",
     )
+
+    # Application settings
+    reqgate_env: Literal["development", "staging", "production"] = "development"
+    reqgate_port: int = 8000
+    log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
+
+    # OpenAI settings
+    openai_api_key: str = ""
+    openai_model: str = "gpt-4o"
+    openai_timeout: int = 30
+
+    # Gemini settings (optional)
+    gemini_api_key: str = ""
+    gemini_model: str = "gemini-1.5-pro"
+
+    # Scoring settings
+    rubric_file_path: str = "config/scoring_rubric.yaml"
+    default_threshold: int = 60
 
     @property
     def is_development(self) -> bool:
@@ -52,9 +47,5 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
-    """
-    Get application settings singleton.
-
-    Uses lru_cache for singleton behavior.
-    """
+    """Get cached settings instance."""
     return Settings()

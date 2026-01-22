@@ -32,7 +32,7 @@ Estimated Time: 1 Week
 - [x] 2.1.1 Create src/reqgate/config/settings.py with Settings class
 - [x] 2.1.2 Add all required configuration fields
 - [x] 2.1.3 Implement get_settings() singleton function
-- [ ] 2.1.4 Create tests/test_settings.py to test configuration loading
+- [x] 2.1.4 Create tests/test_settings.py to test configuration loading
 
 ### 2.2 Setup Logging
 - [x] 2.2.1 Create src/reqgate/observability/logging.py
@@ -47,14 +47,14 @@ Estimated Time: 1 Week
 - [x] 3.1.2 Create src/reqgate/schemas/inputs.py
 - [x] 3.1.3 Implement RequirementPacket schema with all fields
 - [x] 3.1.4 Add validators for RequirementPacket
-- [ ] 3.1.5 Create tests/test_schemas_inputs.py with validation tests
+- [x] 3.1.5 Create tests/test_schemas_inputs.py with validation tests
 
 ### 3.2 Define Output Schemas
 - [x] 3.2.1 Create src/reqgate/schemas/outputs.py
 - [x] 3.2.2 Implement ReviewIssue schema
 - [x] 3.2.3 Implement TicketScoreReport schema
 - [x] 3.2.4 Add examples to schemas
-- [ ] 3.2.5 Create tests/test_schemas_outputs.py
+- [x] 3.2.5 Create tests/test_schemas_outputs.py
 
 ### 3.3 Define Internal Schemas
 - [x] 3.3.1 Create src/reqgate/schemas/internal.py
@@ -75,7 +75,7 @@ Estimated Time: 1 Week
 - [x] 4.2.2 Create src/reqgate/gates/rules.py
 - [x] 4.2.3 Implement RubricLoader class
 - [x] 4.2.4 Implement get_rubric_loader() singleton
-- [ ] 4.2.5 Create tests/test_rubric_loader.py
+- [x] 4.2.5 Create tests/test_rubric_loader.py
 
 ## 5. LLM Infrastructure
 
@@ -86,7 +86,7 @@ Estimated Time: 1 Week
 - [x] 5.1.4 Implement OpenAIClient
 - [x] 5.1.5 Implement get_llm_client() singleton
 - [x] 5.1.6 Add error handling for timeout and API errors
-- [ ] 5.1.7 Create tests/test_llm_adapter.py with mocked tests
+- [x] 5.1.7 Create tests/test_llm_adapter.py with mocked tests
 
 ## 6. Scoring Agent
 
@@ -96,7 +96,7 @@ Estimated Time: 1 Week
 - [x] 6.1.3 Implement ScoringAgent class
 - [x] 6.1.4 Implement score() method
 - [x] 6.1.5 Implement _build_prompt() method
-- [ ] 6.1.6 Create tests/test_scoring_agent.py with mocked LLM
+- [x] 6.1.6 Create tests/test_scoring_agent.py with mocked LLM
 
 ### 6.2 Create Prompt Templates
 - [ ]*6.2.1 Create prompts/ directory (optional)
@@ -108,8 +108,8 @@ Estimated Time: 1 Week
 - [x] 7.1.1 Create src/reqgate/gates/decision.py
 - [x] 7.1.2 Implement HardGate class
 - [x] 7.1.3 Implement decide() method
-- [ ] 7.1.4 Add decision logging
-- [ ] 7.1.5 Create tests/test_hard_gate.py
+- [x] 7.1.4 Add decision logging
+- [x] 7.1.5 Create tests/test_hard_gate.py
 
 ## 8. Integration & Testing
 

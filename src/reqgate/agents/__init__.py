@@ -1,4 +1,4 @@
-"""Agents module - AI agents for processing."""
+"""Agents package."""
 
 from src.reqgate.agents.scoring import ScoringAgent
 

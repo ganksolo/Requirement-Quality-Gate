@@ -102,31 +102,31 @@ Estimated Time: 1 Week
 ## 5. LangGraph Workflow
 
 ### 5.1 Setup LangGraph
-- [ ] 5.1.1 Add langgraph dependency to pyproject.toml
-- [ ] 5.1.2 Create src/reqgate/workflow/graph.py
-- [ ] 5.1.3 Import StateGraph and END from langgraph
+- [x] 5.1.1 Add langgraph dependency to pyproject.toml (already present)
+- [x] 5.1.2 Create src/reqgate/workflow/graph.py
+- [x] 5.1.3 Import StateGraph and END from langgraph
 
 ### 5.2 Implement Workflow Nodes
-- [ ] 5.2.1 Create input_guardrail_node wrapper
-- [ ] 5.2.2 Create structuring_agent_node wrapper
-- [ ] 5.2.3 Update scoring_agent_node to handle fallback mode
-- [ ] 5.2.4 Create hard_gate_node wrapper
-- [ ] 5.2.5 Add execution time tracking to each node
+- [x] 5.2.1 Create input_guardrail_node wrapper (already in Section 2)
+- [x] 5.2.2 Create structuring_agent_node wrapper (already in Section 3)
+- [x] 5.2.3 Update scoring_agent_node to handle fallback mode
+- [x] 5.2.4 Create hard_gate_node wrapper
+- [x] 5.2.5 Add execution time tracking to each node
 
 ### 5.3 Define Workflow Graph
-- [ ] 5.3.1 Implement create_workflow() function
-- [ ] 5.3.2 Add all nodes to StateGraph
-- [ ] 5.3.3 Define linear edges (guardrail → structuring → scoring → gate)
-- [ ] 5.3.4 Implement should_fallback() routing function
-- [ ] 5.3.5 Add conditional edge for fallback logic
-- [ ] 5.3.6 Compile workflow graph
+- [x] 5.3.1 Implement create_workflow() function
+- [x] 5.3.2 Add all nodes to StateGraph
+- [x] 5.3.3 Define linear edges (guardrail → structuring → scoring → gate)
+- [x] 5.3.4 Implement should_fallback() routing function
+- [x] 5.3.5 Add conditional edge for fallback logic
+- [x] 5.3.6 Compile workflow graph
 
 ### 5.4 Workflow Execution
-- [ ] 5.4.1 Implement run_workflow() function
-- [ ] 5.4.2 Initialize AgentState from RequirementPacket
-- [ ] 5.4.3 Execute workflow graph
-- [ ] 5.4.4 Handle workflow exceptions
-- [ ] 5.4.5 Return final AgentState
+- [x] 5.4.1 Implement run_workflow() function
+- [x] 5.4.2 Initialize AgentState from RequirementPacket
+- [x] 5.4.3 Execute workflow graph
+- [x] 5.4.4 Handle workflow exceptions
+- [x] 5.4.5 Return final AgentState
 
 ## 6. Fallback Mechanism
 

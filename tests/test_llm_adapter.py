@@ -3,9 +3,7 @@
 from unittest.mock import MagicMock, patch
 
 import pytest
-
 from src.reqgate.adapters.llm import LLMClient, OpenRouterClient, get_llm_client
-from src.reqgate.schemas.outputs import TicketScoreReport
 
 
 class TestLLMClient:

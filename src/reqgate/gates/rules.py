@@ -2,7 +2,6 @@
 Scoring rubric loader.
 
 Loads and caches scoring rules from YAML configuration.
-Phase 1: Placeholder - Full implementation in later tasks.
 """
 
 from functools import lru_cache
@@ -11,6 +10,7 @@ from typing import Any
 
 import yaml
 from src.reqgate.config.settings import get_settings
+from src.reqgate.schemas.config import RubricScenarioConfig
 
 
 class RubricLoader:
@@ -43,7 +43,7 @@ class RubricLoader:
 
         return self._cache  # type: ignore
 
-    def get_scenario_config(self, ticket_type: str) -> dict[str, Any]:
+    def get_scenario_config(self, ticket_type: str) -> RubricScenarioConfig:
         """
         Get configuration for a specific scenario.
 
@@ -51,7 +51,7 @@ class RubricLoader:
             ticket_type: 'Feature' or 'Bug'
 
         Returns:
-            Scenario-specific configuration
+            Scenario-specific configuration with typed fields
         """
         rubric = self.load()
         scenario = "BUG" if ticket_type == "Bug" else "FEATURE"

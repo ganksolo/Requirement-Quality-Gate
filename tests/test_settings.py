@@ -4,7 +4,6 @@ import os
 from unittest.mock import patch
 
 import pytest
-
 from src.reqgate.config.settings import Settings, get_settings
 
 
@@ -19,7 +18,7 @@ class TestSettings:
             assert settings.reqgate_env == "development"
             assert settings.reqgate_port == 8000
             assert settings.log_level == "INFO"
-            assert settings.llm_model == "openai/gpt-4o"
+            assert settings.llm_model == "deepseek/deepseek-chat"
             assert settings.llm_timeout == 60
             assert settings.default_threshold == 60
             assert settings.openrouter_base_url == "https://openrouter.ai/api/v1"

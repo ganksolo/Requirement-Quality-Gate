@@ -2,13 +2,11 @@
 Scoring agent for requirement evaluation.
 
 Uses LLM to score requirements against rubric.
-Phase 1: Placeholder - Full implementation in later tasks.
 """
-
-from typing import Any
 
 from src.reqgate.adapters.llm import get_llm_client
 from src.reqgate.gates.rules import get_rubric_loader
+from src.reqgate.schemas.config import RubricScenarioConfig
 from src.reqgate.schemas.inputs import RequirementPacket
 from src.reqgate.schemas.outputs import TicketScoreReport
 
@@ -51,7 +49,9 @@ class ScoringAgent:
 
         return report
 
-    def _build_prompt(self, packet: RequirementPacket, config: dict[str, Any]) -> str:
+    def _build_prompt(
+        self, packet: RequirementPacket, config: RubricScenarioConfig
+    ) -> str:
         """Build scoring prompt."""
         prompt_template = """# Role
 You are a strict Tech Lead and Gatekeeper for the engineering team.

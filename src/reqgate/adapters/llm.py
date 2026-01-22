@@ -9,7 +9,6 @@ from abc import ABC, abstractmethod
 
 from openai import OpenAI
 from pydantic import BaseModel
-
 from src.reqgate.config.settings import get_settings
 
 logger = logging.getLogger("reqgate.llm")

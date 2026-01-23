@@ -81,8 +81,8 @@ ruff check src/ tests/
 
 ### 待完成任务
 
-- [ ] 9.x Milestone T1 验证 (第一次拒绝场景)
-- [ ] `/score` API 端点
+- [x] Milestone T1 验证 (第一次拒绝场景) → `scripts/verify_milestone_t1.py`
+- [ ] `/score` API 端点 (移至 Phase 3)
 
 ---
 

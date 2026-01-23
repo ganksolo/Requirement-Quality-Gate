@@ -317,13 +317,13 @@ mypy src/
 - `.cursorrules` - Cursor IDE 规则
 
 ### 参考文档
-- `docs/项目需求文档.md` - 系统 PRD
-- `docs/蓝图-1.md` - 宏观架构
-- `docs/Agent-2.md` - 微观实施
-- `docs/Roadmap-3.md` - 实施路线图
-- `docs/核心 Prompts 与规则集配置-4.md` - Prompt 设计
-- `docs/技术方案.md` - 技术执行方案
-- `docs/init_info.md` - 初始化信息
+- `requirements/项目需求文档.md` - 系统 PRD
+- `requirements/蓝图-1.md` - 宏观架构
+- `requirements/Agent-2.md` - 微观实施
+- `requirements/Roadmap-3.md` - 实施路线图
+- `requirements/核心 Prompts 与规则集配置-4.md` - Prompt 设计
+- `requirements/技术方案.md` - 技术执行方案
+- `requirements/init_info.md` - 初始化信息
 
 ## 常见问题
 

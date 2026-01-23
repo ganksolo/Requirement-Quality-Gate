@@ -222,9 +222,9 @@ Phase 2 在 Phase 1 的基础上，添加结构化能力和完整的工作流管
 
 ## References
 
-- docs/项目需求文档.md
-- docs/Agent-2.md (PRD_Draft Schema 定义)
-- docs/核心 Prompts 与规则集配置-4.md (Structuring Prompt)
-- docs/Roadmap-3.md (Phase 2 规划)
-- docs/技术方案.md (LangGraph 架构)
+- requirements/项目需求文档.md
+- requirements/Agent-2.md (PRD_Draft Schema 定义)
+- requirements/核心 Prompts 与规则集配置-4.md (Structuring Prompt)
+- requirements/Roadmap-3.md (Phase 2 规划)
+- requirements/技术方案.md (LangGraph 架构)
 - Phase 1 Spec (基础设施和 Scoring Agent)

@@ -262,13 +262,13 @@ Infrastructure Layer (LLM, DB)
 - Cursor 规则: `.cursorrules`
 
 ### 参考文档
-- 项目需求: `docs/项目需求文档.md`
-- 架构蓝图: `docs/蓝图-1.md`
-- 微观实施: `docs/Agent-2.md`
-- 实施路线: `docs/Roadmap-3.md`
-- Prompt 配置: `docs/核心 Prompts 与规则集配置-4.md`
-- 技术方案: `docs/技术方案.md`
-- 初始化信息: `docs/init_info.md`
+- 项目需求: `requirements/项目需求文档.md`
+- 架构蓝图: `requirements/蓝图-1.md`
+- 微观实施: `requirements/Agent-2.md`
+- 实施路线: `requirements/Roadmap-3.md`
+- Prompt 配置: `requirements/核心 Prompts 与规则集配置-4.md`
+- 技术方案: `requirements/技术方案.md`
+- 初始化信息: `requirements/init_info.md`
 
 ## 注意事项
 

@@ -230,7 +230,7 @@ Phase 1 建立项目基础设施和核心评分能力。目标是构建一个最
 
 ## References
 
-- docs/项目需求文档.md
-- docs/Agent-2.md (数据契约定义)
-- docs/核心 Prompts 与规则集配置-4.md
-- docs/技术方案.md
+- requirements/项目需求文档.md
+- requirements/Agent-2.md (数据契约定义)
+- requirements/核心 Prompts 与规则集配置-4.md
+- requirements/技术方案.md

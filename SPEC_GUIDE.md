@@ -205,13 +205,13 @@ cat .kiro/specs/phase-1-foundation-scoring/tasks.md
 4. **项目概览**: `.kiro/PROJECT_OVERVIEW.md`
 
 ### 参考
-1. **项目需求**: `docs/项目需求文档.md`
-2. **架构蓝图**: `docs/蓝图-1.md`
-3. **微观实施**: `docs/Agent-2.md`
-4. **实施路线**: `docs/Roadmap-3.md`
-5. **Prompt 配置**: `docs/核心 Prompts 与规则集配置-4.md`
-6. **技术方案**: `docs/技术方案.md`
-7. **初始化信息**: `docs/init_info.md`
+1. **项目需求**: `requirements/项目需求文档.md`
+2. **架构蓝图**: `requirements/蓝图-1.md`
+3. **微观实施**: `requirements/Agent-2.md`
+4. **实施路线**: `requirements/Roadmap-3.md`
+5. **Prompt 配置**: `requirements/核心 Prompts 与规则集配置-4.md`
+6. **技术方案**: `requirements/技术方案.md`
+7. **初始化信息**: `requirements/init_info.md`
 
 ## 🔧 开发工具
 

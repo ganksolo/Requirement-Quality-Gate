@@ -15,10 +15,10 @@
 #### 新路径格式
 ```
 旧路径: 项目需求文档.md
-新路径: docs/项目需求文档.md
+新路径: requirements/项目需求文档.md
 
 旧路径: Agent-2.md
-新路径: docs/Agent-2.md
+新路径: requirements/Agent-2.md
 ```
 
 ### 2. 创建引导文件
@@ -140,13 +140,13 @@ SPEC_GUIDE.md (Spec 指南)
 - **.kiro/specs/phase-1-foundation-scoring/tasks.md**
 
 ### 第五层：参考文档
-- **docs/项目需求文档.md**
-- **docs/蓝图-1.md**
-- **docs/Agent-2.md**
-- **docs/Roadmap-3.md**
-- **docs/核心 Prompts 与规则集配置-4.md**
-- **docs/技术方案.md**
-- **docs/init_info.md**
+- **requirements/项目需求文档.md**
+- **requirements/蓝图-1.md**
+- **requirements/Agent-2.md**
+- **requirements/Roadmap-3.md**
+- **requirements/核心 Prompts 与规则集配置-4.md**
+- **requirements/技术方案.md**
+- **requirements/init_info.md**
 
 ## 使用建议
 

@@ -88,9 +88,136 @@ ruff check src/ tests/
 
 ## Phase 2: Multi-Agent Workflow
 
-**状态**: ⏳ 待开始
+**状态**: ✅ 核心功能完成  
+**更新日期**: 2026-01-23
 
-> Phase 2 完成后在此补充记录
+### 已完成功能
+
+| 层级 | 模块 | 功能描述 | 状态 |
+|------|------|----------|------|
+| **Schema 层** | `schemas/internal.py` | `PRD_Draft` 结构化 PRD 模型 | ✅ |
+| **Schema 层** | `schemas/config.py` | `WorkflowConfig` 工作流配置 | ✅ |
+| **工作流层** | `workflow/graph.py` | LangGraph DAG 工作流定义 | ✅ |
+| **工作流层** | `workflow/errors.py` | 工作流异常类型定义 | ✅ |
+| **工作流节点** | `workflow/nodes/input_guardrail.py` | 输入验证 + PII 检测 + 注入防护 | ✅ |
+| **工作流节点** | `workflow/nodes/structuring_agent.py` | LLM 结构化提取 + 反幻觉检测 | ✅ |
+| **LLM 适配器** | `adapters/llm.py` | 重试逻辑 + `LLMClientWithRetry` | ✅ |
+| **工作流逻辑** | `workflow/graph.py` | Fallback 降级机制 (-5 分惩罚) | ✅ |
+| **配置层** | `config/settings.py` | Phase 2 环境变量扩展 | ✅ |
+
+### 新增 Schema
+
+| Schema | 描述 | 关键字段 |
+|--------|------|----------|
+| `PRD_Draft` | 结构化 PRD 草案 | `title`, `user_story`, `acceptance_criteria`, `missing_info` |
+| `AgentState` | LangGraph 状态 | `structured_prd`, `fallback_activated`, `execution_times` |
+| `WorkflowConfig` | 工作流配置 | `enable_guardrail`, `enable_structuring`, `enable_fallback` |
+| `GuardrailResult` | 验证结果 | `passed`, `errors`, `warnings` |
+
+### 工作流 DAG
+
+```
+[Input] → [Guardrail] → [Structuring Agent] → {Check}
+                                                ↓
+                              ┌─────────────────┴─────────────────┐
+                              ↓                                   ↓
+                         [Scoring]                          [Fallback] → [Scoring]
+                              ↓                                   ↓
+                           [Gate] ←───────────────────────────────┘
+                              ↓
+                          [Output]
+```
+
+### 错误类型
+
+| 异常类 | 触发场景 |
+|--------|----------|
+| `WorkflowExecutionError` | 工作流执行基础异常 |
+| `GuardrailRejectionError` | 输入被 Guardrail 拒绝 |
+| `StructuringFailureError` | 结构化 Agent 提取失败 |
+| `LLMTimeoutError` | LLM 调用超时 |
+| `LLMRateLimitError` | LLM 调用被限流 |
+
+### 测试覆盖
+
+| 测试文件 | 测试数量 | 覆盖模块 |
+|----------|---------|----------|
+| `test_prd_draft.py` | 20 | PRD_Draft Schema |
+| `test_agent_state.py` | 8 | AgentState TypedDict |
+| `test_workflow_config.py` | 17 | WorkflowConfig 配置 |
+| `test_input_guardrail.py` | 21 | 输入验证 + 安全检测 |
+| `test_structuring_agent.py` | 22 | 结构化 Agent + 反幻觉 |
+| `test_llm_retry.py` | 12 | 重试逻辑 |
+| `test_workflow_errors.py` | 11 | 异常类型 |
+| `test_workflow_graph.py` | 17 | LangGraph 节点 |
+| `test_fallback.py` | 36 | Fallback 降级机制 |
+| `test_workflow_integration.py` | 22 | 端到端工作流 |
+| **Phase 2 新增** | **186** | - |
+| **总计 (含 Phase 1)** | **276** | - |
+
+### Milestone 验证结果
+
+| Milestone | 验证脚本 | 结果 |
+|-----------|----------|------|
+| **T2: End-to-End** | `scripts/milestone_t2_verification.py` | ✅ PASS (85/100, 10.49s) |
+| **T2.1: Degradation** | `scripts/milestone_t2_1_verification.py` | ✅ PASS (Fallback 激活) |
+
+### 人工测试命令
+
+```bash
+# 运行所有测试
+pytest tests/ -v
+
+# 仅运行 Phase 2 测试
+pytest tests/test_prd_draft.py tests/test_workflow_graph.py tests/test_fallback.py -v
+
+# Milestone T2 验证 (需要 LLM API)
+python scripts/milestone_t2_verification.py
+
+# Milestone T2.1 验证 (使用 Mock)
+python scripts/milestone_t2_1_verification.py
+
+# 工作流逻辑快速测试
+python -c "
+from src.reqgate.schemas.inputs import RequirementPacket
+from src.reqgate.schemas.config import WorkflowConfig
+from src.reqgate.workflow.graph import run_workflow
+
+packet = RequirementPacket(
+    raw_text='As a user, I want to reset my password via email so that I can regain access to my account. AC: User clicks forgot password, enters email, receives reset link.',
+    source_type='Jira_Ticket',
+    project_key='AUTH',
+    ticket_type='Feature',
+)
+
+config = WorkflowConfig(enable_guardrail=True, enable_structuring=True)
+result = run_workflow(packet, config)
+
+print(f'PRD Title: {result[\"structured_prd\"].title if result[\"structured_prd\"] else \"N/A\"}')
+print(f'Score: {result[\"score_report\"].total_score if result[\"score_report\"] else \"N/A\"}')
+print(f'Decision: {\"PASS\" if result[\"gate_decision\"] else \"REJECT\"}')
+print(f'Fallback: {result[\"fallback_activated\"]}')
+"
+
+# 代码质量检查
+ruff check src/reqgate/workflow/ src/reqgate/schemas/
+```
+
+### 新增环境变量
+
+| 变量 | 默认值 | 描述 |
+|------|--------|------|
+| `ENABLE_STRUCTURING` | `true` | 启用结构化 Agent |
+| `ENABLE_GUARDRAIL` | `true` | 启用输入验证 |
+| `GUARDRAIL_MODE` | `lenient` | 验证严格程度 |
+| `MAX_LLM_RETRIES` | `3` | LLM 重试次数 |
+| `STRUCTURING_TIMEOUT` | `20` | 结构化超时 (秒) |
+
+### 待完成任务
+
+- [ ] `/workflow` API 端点
+- [ ] 工作流可视化输出
+- [ ] 性能基准测试
 
 ---
 

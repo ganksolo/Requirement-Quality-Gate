@@ -137,7 +137,7 @@ class TestFallbackPath:
 
     @patch("src.reqgate.workflow.graph.ScoringAgent")
     @patch("src.reqgate.workflow.graph.HardGate")
-    @patch("src.reqgate.workflow.nodes.structuring_agent.get_llm_client")
+    @patch("src.reqgate.workflow.nodes.structuring_agent.LLMClientWithRetry")
     def test_fallback_activated_on_structuring_failure(
         self,
         mock_llm: MagicMock,
@@ -179,7 +179,7 @@ class TestFallbackPath:
 
     @patch("src.reqgate.workflow.graph.ScoringAgent")
     @patch("src.reqgate.workflow.graph.HardGate")
-    @patch("src.reqgate.workflow.nodes.structuring_agent.get_llm_client")
+    @patch("src.reqgate.workflow.nodes.structuring_agent.LLMClientWithRetry")
     def test_scoring_uses_raw_text_in_fallback(
         self,
         mock_llm: MagicMock,

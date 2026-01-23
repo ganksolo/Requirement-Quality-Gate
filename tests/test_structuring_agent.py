@@ -178,7 +178,7 @@ class TestValidateNoHallucination:
 class TestStructuringAgent:
     """Tests for StructuringAgent class."""
 
-    @patch("src.reqgate.workflow.nodes.structuring_agent.get_llm_client")
+    @patch("src.reqgate.workflow.nodes.structuring_agent.LLMClientWithRetry")
     def test_structure_success(self, mock_get_llm: MagicMock) -> None:
         """Test successful structuring."""
         # Mock LLM response
@@ -203,7 +203,7 @@ class TestStructuringAgent:
         assert "export" in result.title.lower()
         mock_client.generate.assert_called_once()
 
-    @patch("src.reqgate.workflow.nodes.structuring_agent.get_llm_client")
+    @patch("src.reqgate.workflow.nodes.structuring_agent.LLMClientWithRetry")
     def test_structure_llm_failure(self, mock_get_llm: MagicMock) -> None:
         """Test handling of LLM failure."""
         mock_client = MagicMock()
@@ -240,7 +240,7 @@ class TestStructuringAgentNode:
             "execution_times": {"guardrail": 0.05},
         }
 
-    @patch("src.reqgate.workflow.nodes.structuring_agent.get_llm_client")
+    @patch("src.reqgate.workflow.nodes.structuring_agent.LLMClientWithRetry")
     def test_node_success(self, mock_get_llm: MagicMock) -> None:
         """Test node successfully structures input."""
         mock_client = MagicMock()
@@ -266,7 +266,7 @@ class TestStructuringAgentNode:
         assert result["current_stage"] == "structuring_complete"
         assert "structuring" in result["execution_times"]
 
-    @patch("src.reqgate.workflow.nodes.structuring_agent.get_llm_client")
+    @patch("src.reqgate.workflow.nodes.structuring_agent.LLMClientWithRetry")
     def test_node_failure_returns_none(self, mock_get_llm: MagicMock) -> None:
         """Test node returns None on failure (for fallback)."""
         mock_client = MagicMock()
@@ -280,7 +280,7 @@ class TestStructuringAgentNode:
         assert result["current_stage"] == "structuring_failed"
         assert len(result["error_logs"]) > 0
 
-    @patch("src.reqgate.workflow.nodes.structuring_agent.get_llm_client")
+    @patch("src.reqgate.workflow.nodes.structuring_agent.LLMClientWithRetry")
     def test_node_invalid_response_returns_none(self, mock_get_llm: MagicMock) -> None:
         """Test node returns None when LLM returns invalid response."""
         mock_client = MagicMock()
@@ -297,7 +297,7 @@ class TestStructuringAgentNode:
 class TestExtractionFromRealText:
     """Tests for extraction from realistic requirement texts."""
 
-    @patch("src.reqgate.workflow.nodes.structuring_agent.get_llm_client")
+    @patch("src.reqgate.workflow.nodes.structuring_agent.LLMClientWithRetry")
     def test_extract_from_meeting_notes(self, mock_get_llm: MagicMock) -> None:
         """Test extraction from messy meeting notes format."""
         meeting_notes = """
@@ -349,7 +349,7 @@ class TestExtractionFromRealText:
         assert len(result.acceptance_criteria) >= 2
         assert len(result.clarification_questions) > 0
 
-    @patch("src.reqgate.workflow.nodes.structuring_agent.get_llm_client")
+    @patch("src.reqgate.workflow.nodes.structuring_agent.LLMClientWithRetry")
     def test_extract_with_missing_ac(self, mock_get_llm: MagicMock) -> None:
         """Test extraction when input lacks clear acceptance criteria."""
         vague_input = "We need to make the dashboard faster. Users are complaining."
@@ -383,7 +383,7 @@ class TestExtractionFromRealText:
         assert len(result.missing_info) > 0
         assert any("time" in info.lower() for info in result.missing_info)
 
-    @patch("src.reqgate.workflow.nodes.structuring_agent.get_llm_client")
+    @patch("src.reqgate.workflow.nodes.structuring_agent.LLMClientWithRetry")
     def test_extract_generates_clarification_questions(self, mock_get_llm: MagicMock) -> None:
         """Test that agent generates clarification questions for ambiguous input."""
         ambiguous_input = "Add notifications to the app."
@@ -415,7 +415,7 @@ class TestExtractionFromRealText:
 class TestAntiHallucination:
     """Tests for anti-hallucination measures."""
 
-    @patch("src.reqgate.workflow.nodes.structuring_agent.get_llm_client")
+    @patch("src.reqgate.workflow.nodes.structuring_agent.LLMClientWithRetry")
     def test_validation_catches_invented_content(self, mock_get_llm: MagicMock) -> None:
         """Test that validation flags content not in original input."""
         simple_input = "Add a logout button"

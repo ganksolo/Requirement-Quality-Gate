@@ -326,7 +326,7 @@ class TestFallbackWorkflowIntegration:
 
     @patch("src.reqgate.workflow.graph.ScoringAgent")
     @patch("src.reqgate.workflow.graph.HardGate")
-    @patch("src.reqgate.workflow.nodes.structuring_agent.get_llm_client")
+    @patch("src.reqgate.workflow.nodes.structuring_agent.LLMClientWithRetry")
     def test_full_fallback_path(
         self,
         mock_llm: MagicMock,

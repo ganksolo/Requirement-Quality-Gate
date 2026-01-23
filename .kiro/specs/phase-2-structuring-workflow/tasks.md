@@ -190,22 +190,22 @@ Estimated Time: 1 Week
 ## 9. Milestone Verification
 
 ### 9.1 Milestone T2: End-to-End Workflow
-- [ ] 9.1.1 Prepare meeting transcript sample (300 words)
-- [ ] 9.1.2 Create test script to run complete workflow
-- [ ] 9.1.3 Verify PRD_Draft is generated
-- [ ] 9.1.4 Verify PRD_Draft contains User Story and AC
-- [ ] 9.1.5 Verify Scoring Agent uses PRD_Draft
-- [ ] 9.1.6 Verify Hard Gate makes correct decision
-- [ ] 9.1.7 Verify workflow completes in < 60s
-- [ ] 9.1.8 Document test results
+- [x] 9.1.1 Prepare meeting transcript sample (300 words)
+- [x] 9.1.2 Create test script to run complete workflow
+- [x] 9.1.3 Verify PRD_Draft is generated
+- [x] 9.1.4 Verify PRD_Draft contains User Story and AC
+- [x] 9.1.5 Verify Scoring Agent uses PRD_Draft
+- [x] 9.1.6 Verify Hard Gate makes correct decision
+- [x] 9.1.7 Verify workflow completes in < 60s
+- [x] 9.1.8 Document test results
 
 ### 9.2 Milestone T2.1: Degradation Test
-- [ ] 9.2.1 Create test script with mocked structuring failure
-- [ ] 9.2.2 Verify workflow doesn't crash
-- [ ] 9.2.3 Verify Scoring Agent uses raw text
-- [ ] 9.2.4 Verify score penalty applied
-- [ ] 9.2.5 Verify error logged
-- [ ] 9.2.6 Document test results
+- [x] 9.2.1 Create test script with mocked structuring failure
+- [x] 9.2.2 Verify workflow doesn't crash
+- [x] 9.2.3 Verify Scoring Agent uses raw text
+- [x] 9.2.4 Verify score penalty applied
+- [x] 9.2.5 Verify error logged
+- [x] 9.2.6 Document test results
 
 ## Task Dependencies
 

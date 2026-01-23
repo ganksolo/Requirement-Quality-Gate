@@ -5,7 +5,7 @@ import logging
 import time
 from pathlib import Path
 
-from src.reqgate.adapters.llm import get_llm_client
+from src.reqgate.adapters.llm import LLMClientWithRetry
 from src.reqgate.schemas.internal import AgentState, PRD_Draft
 from src.reqgate.workflow.errors import StructuringFailureError
 
@@ -234,7 +234,7 @@ class StructuringAgent:
             prompt_path: Optional path to custom prompt template
         """
         self.prompt_template = load_prompt_template(prompt_path)
-        self.llm_client = get_llm_client()
+        self.llm_client = LLMClientWithRetry()
 
     def structure(self, raw_text: str, validate_hallucination: bool = True) -> PRD_Draft:
         """

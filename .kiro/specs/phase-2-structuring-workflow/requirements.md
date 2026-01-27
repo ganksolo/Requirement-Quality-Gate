@@ -228,3 +228,77 @@ Phase 2 在 Phase 1 的基础上，添加结构化能力和完整的工作流管
 - requirements/Roadmap-3.md (Phase 2 规划)
 - requirements/技术方案.md (LangGraph 架构)
 - Phase 1 Spec (基础设施和 Scoring Agent)
+
+
+---
+
+## Errata & Compliance Updates (2026-01-23)
+
+### 白皮书合规性修复
+
+基于 `requirements/reports.md` 的评测结果，Phase 2 需要补充以下功能以符合白皮书要求。
+
+### 新增 User Story
+
+**US-5.1: 作为系统，我需要在结构化后验证 PRD 完整性（Hard Check #1）**
+- 验证 PRD_Draft 的结构完整性
+- 检查 AC 数量是否足够（>= 2）
+- 检查 User Story 格式是否正确
+- 检查 Title 是否符合规范
+- 在结构不完整时阻止进入评分阶段
+
+**US-5.2: 作为开发者，我需要明确 Normalize 节点的实现方式**
+- 文档说明 RequirementPacket Schema 承担了 Normalize 职责
+- 更新架构图标注完整的 7 个节点
+- 澄清白皮书中的"Normalize 节点"已通过 Schema 验证实现
+
+### 新增 Acceptance Criteria
+
+**AC-12: Hard Check #1 结构完整性检查**
+- Given: Structuring Agent 成功生成 PRD_Draft
+- When: 执行 Hard Check #1 节点
+- Then: 验证 AC 数量 >= 2，User Story 长度 >= 20，Title 符合规范
+
+**AC-13: Hard Check #1 拦截低质量结构**
+- Given: PRD_Draft 的 AC 数量 < 2
+- When: 执行 Hard Check #1 节点
+- Then: 标记 `structure_check_passed = False`，记录错误到 `structure_errors`
+
+**AC-14: 架构文档完整性**
+- Given: 查看 design.md 架构图
+- When: 对照白皮书 4.2 节点要求
+- Then: 文档明确说明 7 个节点的实现方式（包括 Normalize = RequirementPacket）
+
+### 更新的 Non-Functional Requirements
+
+**NFR-5: 白皮书合规性**
+- 实现白皮书 4.2 要求的 7 个核心节点
+- 明确 Normalize 节点的实现方式
+- 保持与白皮书架构的一致性
+
+### 更新的 Success Metrics
+
+**Milestone T2.2: 白皮书合规性验证**
+
+**测试方式**：
+1. 对照白皮书 4.2 核心节点清单
+2. 验证每个节点的实现
+3. 检查架构文档的完整性
+
+**成功标准**：
+- [ ] 实现了 Hard Check #1（结构完整性检查）节点
+- [ ] 文档明确说明 Normalize = RequirementPacket Schema
+- [ ] 架构图标注完整的 7 个节点
+- [ ] 白皮书合规度从 70% 提升到 95%+
+
+### 不在 Phase 2 修复的问题
+
+以下问题按原计划在后续 Phase 实现：
+
+| 问题 | 计划 Phase | 原因 |
+|------|-----------|------|
+| Jira 回写 | Phase 3 | 需要外部集成 |
+| Reject 计数器 | Phase 3 | 需要数据库持久化 |
+| Formatter 节点 | Phase 3 | 当前有基础输出 |
+| Golden Set | Phase 4 | 需要积累真实数据 |
+| Rubric 版本管理 | Phase 4 | 规则尚未稳定 |

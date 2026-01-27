@@ -89,7 +89,7 @@ ruff check src/ tests/
 ## Phase 2: Multi-Agent Workflow
 
 **状态**: ✅ 核心功能完成  
-**更新日期**: 2026-01-23
+**更新日期**: 2026-01-27
 
 ### 已完成功能
 
@@ -101,6 +101,7 @@ ruff check src/ tests/
 | **工作流层** | `workflow/errors.py` | 工作流异常类型定义 | ✅ |
 | **工作流节点** | `workflow/nodes/input_guardrail.py` | 输入验证 + PII 检测 + 注入防护 | ✅ |
 | **工作流节点** | `workflow/nodes/structuring_agent.py` | LLM 结构化提取 + 反幻觉检测 | ✅ |
+| **工作流节点** | `workflow/nodes/structure_check.py` | Hard Check #1 结构完整性验证 | ✅ |
 | **LLM 适配器** | `adapters/llm.py` | 重试逻辑 + `LLMClientWithRetry` | ✅ |
 | **工作流逻辑** | `workflow/graph.py` | Fallback 降级机制 (-5 分惩罚) | ✅ |
 | **配置层** | `config/settings.py` | Phase 2 环境变量扩展 | ✅ |
@@ -118,14 +119,16 @@ ruff check src/ tests/
 
 ```
 [Input] → [Guardrail] → [Structuring Agent] → {Check}
-                                                ↓
-                              ┌─────────────────┴─────────────────┐
-                              ↓                                   ↓
-                         [Scoring]                          [Fallback] → [Scoring]
-                              ↓                                   ↓
-                           [Gate] ←───────────────────────────────┘
-                              ↓
-                          [Output]
+                                                |
+                               ┌────────────────┴────────────────┐
+                               ↓ (PRD available)         ↓ (no PRD)
+                       [Structure Check]           [Fallback]
+                               ↓                         ↓
+                          [Scoring] ←──────────────────┘
+                               ↓
+                            [Gate]
+                               ↓
+                           [Output]
 ```
 
 ### 错误类型
@@ -152,8 +155,9 @@ ruff check src/ tests/
 | `test_workflow_graph.py` | 17 | LangGraph 节点 |
 | `test_fallback.py` | 36 | Fallback 降级机制 |
 | `test_workflow_integration.py` | 22 | 端到端工作流 |
-| **Phase 2 新增** | **186** | - |
-| **总计 (含 Phase 1)** | **276** | - |
+| `test_structure_check.py` | 10 | Hard Check #1 结构验证 |
+| **Phase 2 新增** | **196** | - |
+| **总计 (含 Phase 1)** | **286** | - |
 
 ### Milestone 验证结果
 
@@ -161,6 +165,7 @@ ruff check src/ tests/
 |-----------|----------|------|
 | **T2: End-to-End** | `scripts/milestone_t2_verification.py` | ✅ PASS (85/100, 10.49s) |
 | **T2.1: Degradation** | `scripts/milestone_t2_1_verification.py` | ✅ PASS (Fallback 激活) |
+| **T2.2: Structure Check** | Hard Check #1 节点实现 + 10 测试 | ✅ PASS (286/286 tests) |
 
 ### 人工测试命令
 

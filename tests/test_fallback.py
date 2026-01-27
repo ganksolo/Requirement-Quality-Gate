@@ -77,12 +77,12 @@ class TestFallbackActivation:
         assert result == "fallback_scoring"
 
     def test_should_fallback_returns_scoring_when_prd_available(self) -> None:
-        """Test that should_fallback returns 'scoring' when PRD is available."""
+        """Test that should_fallback returns 'structure_check' when PRD is available."""
         state = make_state(structured_prd=make_prd())
 
         result = should_fallback(state)
 
-        assert result == "scoring"
+        assert result == "structure_check"
 
     def test_activate_fallback_sets_flag(self) -> None:
         """Test that activate_fallback sets the fallback_activated flag."""

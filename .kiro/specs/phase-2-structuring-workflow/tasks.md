@@ -300,3 +300,169 @@ Once Phase 2 is complete and Milestones T2/T2.1 are verified:
 3. **Error Swallowing**: Always log errors before fallback
 4. **Timeout Handling**: Set reasonable timeouts for LLM calls
 5. **Schema Validation**: Always validate LLM outputs against schemas
+
+
+---
+
+## 10. 白皮书合规性修复 (Compliance Updates)
+
+### 背景
+
+基于 `requirements/manual_reports.md.md` 的评测结果，Phase 2 需要补充以下功能以符合白皮书 4.2 核心节点要求。
+
+**目标**：将白皮书合规度从 80% 提升到 95%+
+
+### 10.1 Hard Check #1 节点实现
+
+- [x] 10.1.1 创建 src/reqgate/workflow/nodes/structure_check.py
+- [x] 10.1.2 实现 hard_check_structure_node() 函数
+- [x] 10.1.3 添加 AC 数量检查（>= 2）
+- [x] 10.1.4 添加 User Story 格式检查（>= 20 字符）
+- [x] 10.1.5 添加 Title 规范检查（10-200 字符，动词开头）
+- [x] 10.1.6 更新 AgentState 添加 structure_check_passed 和 structure_errors 字段
+- [x] 10.1.7 创建 tests/test_structure_check.py
+
+### 10.2 Hard Check #1 测试
+
+- [x] 10.2.1 测试合法 PRD 通过检查
+- [x] 10.2.2 测试 AC 数量不足被拦截
+- [x] 10.2.3 测试 User Story 缺失被拦截
+- [x] 10.2.4 测试 Title 过短被拦截
+- [x] 10.2.5 测试 Title 格式建议（动词开头）
+- [x] 10.2.6 测试 Structuring 失败时跳过检查
+
+### 10.3 集成 Hard Check #1 到工作流
+
+- [x] 10.3.1 更新 src/reqgate/workflow/graph.py
+- [x] 10.3.2 在 create_workflow() 中添加 structure_check 节点
+- [x] 10.3.3 更新 should_check_structure() 路由函数
+- [x] 10.3.4 添加 structuring → structure_check 的条件边
+- [x] 10.3.5 添加 structure_check → scoring 的边
+- [x] 10.3.6 更新 execution_times 记录 structure_check 节点
+
+### 10.4 文档更新
+
+- [x] 10.4.1 更新 design.md 添加 Hard Check #1 设计 (已存在于 design.md L956-1312)
+- [x] 10.4.2 更新 design.md 添加 7 节点映射表 (已存在于 design.md L1116-1124)
+- [x] 10.4.3 更新 design.md 澄清 Normalize = RequirementPacket Schema (已存在于 design.md L1207-1249)
+- [x] 10.4.4 更新 design.md 的 LangGraph DAG 图（包含 7 个节点）(已存在于 design.md L1096-1112)
+- [x] 10.4.5 更新 requirements.md 添加 US-5.1 和 AC-12/13/14 (已存在于 L241-271)
+- [x] 10.4.6 更新 docs/architecture.md 标注完整的 7 个节点
+- [x] 10.4.7 更新 docs/workflow.md 说明 Normalize 实现方式
+
+### 10.5 集成测试更新
+
+- [x] 10.5.1 更新 tests/test_workflow_integration.py
+- [x] 10.5.2 添加 7 节点完整性测试
+- [x] 10.5.3 验证 execution_times 包含 structure_check
+- [x] 10.5.4 验证节点执行顺序正确
+- [x] 10.5.5 测试 Hard Check #1 拦截低质量 PRD
+
+### 10.6 Milestone T2.2: 白皮书合规性验证
+
+- [x] 10.6.1 对照白皮书 4.2 核心节点清单
+- [x] 10.6.2 验证 7 个节点全部实现
+- [x] 10.6.3 验证架构文档完整性 (design.md 已更新)
+- [x] 10.6.4 运行所有测试确保通过 (286/286 passed)
+- [x] 10.6.5 生成合规性报告（更新 docs/PROGRESS.md）
+- [x] 10.6.6 确认白皮书合规度 >= 95%
+
+## Task Dependencies Update
+
+```
+原有依赖保持不变
+9.2 → 10.1 → 10.2 → 10.3 → 10.4 → 10.5 → 10.6
+```
+
+## Execution Notes Update
+
+### 新增时间估算
+
+- Section 10 (合规性修复): 1.5-2 天
+  - 10.1-10.2 (Hard Check #1 实现): 4 hours
+  - 10.3 (工作流集成): 2 hours
+  - 10.4 (文档更新): 2 hours
+  - 10.5 (集成测试): 2 hours
+  - 10.6 (验收): 2 hours
+
+**更新后总计: ~34 hours (4.5-5 days)**
+
+### 优先级
+
+**P0 - 必须完成（阻塞人工测试）**:
+- 10.1 Hard Check #1 实现
+- 10.2 Hard Check #1 测试
+- 10.3 工作流集成
+- 10.5 集成测试更新
+
+**P1 - 建议完成（提升测试体验）**:
+- 10.4 文档更新
+- 10.6 合规性验证
+
+### Code Review Checklist Update
+
+在标记 Phase 2 完成前，额外确认：
+
+- [x] Hard Check #1 节点已实现并测试通过
+- [x] 7 个节点全部在工作流中可见
+- [x] 文档明确说明 Normalize 实现方式 (design.md L1207-1249)
+- [x] 架构图标注完整的 7 个节点 (design.md L1096-1112)
+- [x] 白皮书合规度 >= 95%
+- [x] Milestone T2.2 验收通过 (286/286 tests)
+
+## Notes Update
+
+### 白皮书合规性说明
+
+**修复前的状态**：
+- 6/7 节点实现（缺 Hard Check #1）
+- Normalize 节点实现方式不明确
+- 白皮书合规度 ~80%
+
+**修复后的状态**：
+- 7/7 节点完整实现
+- Normalize 通过 Schema 实现（文档明确）
+- 白皮书合规度 ~95%
+
+**不在 Phase 2 修复的问题**：
+- Jira 回写（Phase 3）
+- Reject 计数器（Phase 3）
+- Formatter 独立节点（Phase 3）
+- Golden Set（Phase 4）
+- Rubric 版本管理（Phase 4）
+
+### 关键设计决策
+
+**Decision: Hard Check #1 的位置**
+
+放在 Structuring 和 Scoring 之间，原因：
+1. 符合白皮书节点顺序
+2. 在结构化后立即验证质量
+3. 避免低质量 PRD 进入评分
+4. 不影响 fallback 机制
+
+**Decision: Normalize 不创建独立节点**
+
+通过 RequirementPacket Schema 实现，原因：
+1. Schema-Driven 原则的体现
+2. Pydantic validators 自动标准化
+3. 避免冗余代码
+4. 符合"输入验证在 Schema 层"的设计
+
+### 测试策略更新
+
+新增测试场景：
+1. Hard Check #1 拦截低质量 PRD
+2. 7 节点完整性验证
+3. Normalize 功能验证（通过 Schema 测试）
+
+### 常见问题
+
+**Q: 为什么 Normalize 不是独立节点？**
+A: Normalize 通过 RequirementPacket Schema 的 validators 实现，这是 Schema-Driven 架构的自然体现。
+
+**Q: Hard Check #1 会影响性能吗？**
+A: 不会。Hard Check #1 是纯逻辑检查（5-10ms），不调用 LLM，性能影响可忽略。
+
+**Q: 如果 Hard Check #1 失败，工作流会中断吗？**
+A: 不会。工作流继续执行，但会在 state 中记录 `structure_check_passed = False` 和具体错误，Scoring Agent 可以根据此信息扣分。

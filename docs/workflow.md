@@ -1,12 +1,12 @@
 # Workflow Documentation
 
-> **Phase 2 Complete** - Full LangGraph workflow implementation.
+> **Phase 2.2 Complete** - Full 7-node LangGraph workflow with Hard Check #1.
 
 ## Overview
 
 ReqGate uses LangGraph to orchestrate a multi-stage requirement processing workflow. The workflow transforms raw requirement text into a structured format, evaluates quality, and makes pass/reject decisions.
 
-## Workflow Stages
+## Workflow Stages (7 Nodes)
 
 ### 1. Input Guardrail
 
@@ -37,7 +37,33 @@ input_guardrail:
     action: "reject"
 ```
 
-### 2. Structuring Agent
+### 2. Normalize (via RequirementPacket Schema)
+
+**Purpose**: Standardize and validate input data structure.
+
+**Implementation**: This node is implemented through **Pydantic Schema validation** rather than a separate processing node.
+
+**Why Schema-based**:
+- All inputs must pass `RequirementPacket` validation before workflow execution
+- Pydantic validators automatically clean and standardize data
+- Fail-fast: invalid inputs are rejected before entering the workflow
+- Schema-Driven architecture principle
+
+**Validation Rules**:
+```python
+class RequirementPacket(BaseModel):
+    raw_text: str = Field(..., min_length=10)  # Length validation
+    source_type: Literal["Jira_Ticket", "PRD_Doc", "Meeting_Transcript"]  # Type standardization
+    project_key: str = Field(..., pattern=r"^[A-Z]{2,5}$")  # Format validation
+    
+    @field_validator("raw_text")
+    def validate_text(cls, v: str) -> str:
+        return v.strip()  # Automatic whitespace normalization
+```
+
+> **Note**: The whitepaper's "Normalize" node is fully satisfied by this Schema-based approach.
+
+### 3. Structuring Agent
 
 **Purpose**: Convert unstructured requirement text into standardized PRD format.
 
@@ -60,7 +86,34 @@ input_guardrail:
 
 **Prompt Template**: `prompts/structuring_agent_v1.txt`
 
-### 3. Scoring Agent
+### 4. Structure Check (Hard Check #1)
+
+**Purpose**: Validate PRD structure completeness before scoring.
+
+**Checks**:
+1. AC count >= 2 (minimum 2 acceptance criteria)
+2. User Story length >= 20 characters
+3. Title length 10-200 characters
+4. Title starts with action verb (recommended)
+
+**Output**:
+- `structure_check_passed`: Boolean flag
+- `structure_errors`: List of validation errors
+
+**Implementation**: `workflow/nodes/structure_check.py`
+
+```python
+def hard_check_structure_node(state: AgentState) -> AgentState:
+    # Deterministic validation (no LLM)
+    # Runs after structuring succeeds, skipped in fallback mode
+```
+
+**Behavior**:
+- If PRD passes all checks: proceed to scoring normally
+- If PRD fails checks: continue to scoring with errors recorded
+- If no PRD (fallback mode): skip check entirely
+
+### 5. Scoring Agent
 
 **Purpose**: Evaluate requirement quality against rubric.
 
@@ -75,7 +128,7 @@ input_guardrail:
 
 **Rubric Configuration**: `config/scoring_rubric.yaml`
 
-### 4. Hard Gate
+### 6. Hard Gate (Hard Check #2)
 
 **Purpose**: Make deterministic pass/reject decision.
 
@@ -89,6 +142,14 @@ else:
 
 **Configuration**:
 - `DEFAULT_THRESHOLD`: 60 (configurable)
+
+### 7. Formatter
+
+**Purpose**: Package and format the final output.
+
+**Implementation**: Currently inline in `run_workflow()`. Will be extracted to independent node in Phase 3.
+
+**Output**: Final `AgentState` with all results.
 
 ## State Management
 
@@ -110,6 +171,10 @@ class AgentState(TypedDict):
     error_logs: List[str]
     fallback_activated: bool
     execution_times: dict[str, float]
+    
+    # Structure check results (Phase 2.2)
+    structure_check_passed: Optional[bool]
+    structure_errors: List[str]
 ```
 
 ## Fallback Mechanism
@@ -148,22 +213,34 @@ def call_llm_with_retry(...):
    └─ Validates RequirementPacket
    └─ Updates current_stage = "guardrail"
    
-2. Structuring Agent
+2. Normalize (implicit)
+   └─ RequirementPacket Schema validation
+   
+3. Structuring Agent
    └─ Extracts PRD_Draft from raw_text
    └─ Updates structured_prd
    └─ Updates current_stage = "structuring"
    
-3. Scoring Agent
+4. Structure Check (Hard Check #1)
+   └─ Validates AC count >= 2
+   └─ Validates User Story format
+   └─ Updates structure_check_passed, structure_errors
+   └─ Updates current_stage = "structure_check"
+   
+5. Scoring Agent
    └─ Formats PRD_Draft for scoring
    └─ Calls LLM for evaluation
    └─ Updates score_report
    └─ Updates current_stage = "scoring"
    
-4. Hard Gate
+6. Hard Gate (Hard Check #2)
    └─ Checks blocking_issues
    └─ Checks total_score vs threshold
    └─ Updates gate_decision
    └─ Updates current_stage = "gate"
+
+7. Formatter (inline)
+   └─ Packages final output
 ```
 
 ### Fallback Path
@@ -171,18 +248,26 @@ def call_llm_with_retry(...):
 ```
 1. Input Guardrail (same as normal)
 
-2. Structuring Agent
+2. Normalize (same as normal - Schema validation)
+
+3. Structuring Agent
    └─ LLM call fails
    └─ Logs error to error_logs
    └─ structured_prd remains None
    
-3. Scoring Agent
+4. Structure Check
+   └─ Skipped (no PRD to check)
+   └─ structure_check_passed = None
+   
+5. Scoring Agent
    └─ Detects structured_prd is None
    └─ Sets fallback_activated = True
    └─ Uses raw_text for scoring
    └─ Applies -5 score penalty
    
-4. Hard Gate (same as normal)
+6. Hard Gate (same as normal)
+
+7. Formatter (same as normal)
 ```
 
 ## Performance

@@ -6,6 +6,9 @@ from src.reqgate.workflow.nodes.input_guardrail import (
     get_guardrail,
     input_guardrail_node,
 )
+from src.reqgate.workflow.nodes.structure_check import (
+    hard_check_structure_node,
+)
 from src.reqgate.workflow.nodes.structuring_agent import (
     StructuringAgent,
     build_prompt,
@@ -20,6 +23,8 @@ __all__ = [
     "GuardrailConfig",
     "get_guardrail",
     "input_guardrail_node",
+    # Structure Check (Hard Check #1)
+    "hard_check_structure_node",
     # Structuring Agent
     "StructuringAgent",
     "build_prompt",

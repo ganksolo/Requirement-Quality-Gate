@@ -196,3 +196,7 @@ class AgentState(TypedDict):
     # Phase 2: Observability
     fallback_activated: bool
     execution_times: dict[str, float]
+
+    # Phase 2 Section 10: Hard Check #1
+    structure_check_passed: bool | None
+    structure_errors: list[str]

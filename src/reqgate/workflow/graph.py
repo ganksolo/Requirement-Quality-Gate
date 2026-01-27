@@ -20,6 +20,7 @@ from src.reqgate.workflow.errors import (
     WorkflowExecutionError,
 )
 from src.reqgate.workflow.nodes.input_guardrail import input_guardrail_node
+from src.reqgate.workflow.nodes.structure_check import hard_check_structure_node
 from src.reqgate.workflow.nodes.structuring_agent import structuring_agent_node
 
 logger = logging.getLogger(__name__)
@@ -210,7 +211,7 @@ def hard_gate_node(state: AgentState) -> AgentState:
 # ============================================
 
 
-def should_fallback(state: AgentState) -> Literal["scoring", "fallback_scoring"]:
+def should_fallback(state: AgentState) -> Literal["structure_check", "fallback_scoring"]:
     """
     Determine if fallback mode should be used.
 
@@ -220,13 +221,13 @@ def should_fallback(state: AgentState) -> Literal["scoring", "fallback_scoring"]
         state: Current workflow state
 
     Returns:
-        "scoring" if structured PRD available, "fallback_scoring" otherwise
+        "structure_check" if structured PRD available, "fallback_scoring" otherwise
     """
     structured_prd = state.get("structured_prd")
 
     if structured_prd is not None:
-        logger.info("Structured PRD available - proceeding to scoring")
-        return "scoring"
+        logger.info("Structured PRD available - proceeding to structure check")
+        return "structure_check"
     else:
         logger.warning("No structured PRD - activating fallback mode")
         return "fallback_scoring"
@@ -292,6 +293,8 @@ def create_workflow(config: WorkflowConfig | None = None) -> StateGraph:
 
     if config.enable_structuring:
         graph.add_node("structuring", structuring_agent_node)
+        # Add structure check node (Hard Check #1)
+        graph.add_node("structure_check", hard_check_structure_node)
 
     graph.add_node("scoring", scoring_node)
     graph.add_node("gate", hard_gate_node)
@@ -311,13 +314,15 @@ def create_workflow(config: WorkflowConfig | None = None) -> StateGraph:
                 "structuring",
                 should_fallback,
                 {
-                    "scoring": "scoring",
+                    "structure_check": "structure_check",
                     "fallback_scoring": "fallback",
                 },
             )
+            graph.add_edge("structure_check", "scoring")
             graph.add_edge("fallback", "scoring")
         else:
-            graph.add_edge("structuring", "scoring")
+            graph.add_edge("structuring", "structure_check")
+            graph.add_edge("structure_check", "scoring")
 
     elif config.enable_guardrail:
         # Guardrail only: guardrail → scoring → gate
@@ -333,13 +338,15 @@ def create_workflow(config: WorkflowConfig | None = None) -> StateGraph:
                 "structuring",
                 should_fallback,
                 {
-                    "scoring": "scoring",
+                    "structure_check": "structure_check",
                     "fallback_scoring": "fallback",
                 },
             )
+            graph.add_edge("structure_check", "scoring")
             graph.add_edge("fallback", "scoring")
         else:
-            graph.add_edge("structuring", "scoring")
+            graph.add_edge("structuring", "structure_check")
+            graph.add_edge("structure_check", "scoring")
 
     else:
         # Minimal: scoring → gate
@@ -381,6 +388,9 @@ def create_initial_state(packet: RequirementPacket) -> AgentState:
         current_stage="init",
         fallback_activated=False,
         execution_times={},
+        # Phase 2 Section 10: Hard Check #1
+        structure_check_passed=None,
+        structure_errors=[],
     )
 
 

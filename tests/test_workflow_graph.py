@@ -145,7 +145,7 @@ class TestShouldFallback:
 
         result = should_fallback(state)
 
-        assert result == "scoring"
+        assert result == "structure_check"
 
     def test_returns_fallback_when_no_prd(self) -> None:
         """Test routing when no structured PRD."""

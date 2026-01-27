@@ -1,6 +1,6 @@
 # Architecture Overview
 
-> **Updated for Phase 2** - Complete workflow architecture with LangGraph integration.
+> **Updated for Phase 2.2** - Complete 7-node workflow architecture with Hard Check #1 integration.
 
 ## System Architecture
 
@@ -55,20 +55,23 @@
 - **AgentState**: LangGraph workflow state container
 
 ### Workflow Layer (Phase 2)
-- **LangGraph DAG**: Orchestrates the complete workflow
-- **Input Guardrail**: Validates and sanitizes input
-- **Structuring Agent**: Converts unstructured text to PRD_Draft
+- **LangGraph DAG**: Orchestrates the complete 7-node workflow
+- **Input Guardrail**: Validates and sanitizes input (Node 1)
+- **Normalize**: Input standardization via RequirementPacket Schema (Node 2)
+- **Structuring Agent**: Converts unstructured text to PRD_Draft (Node 3)
+- **Structure Check**: Hard Check #1 - validates PRD completeness (Node 4)
 - **Fallback Mechanism**: Graceful degradation on failures
 
 ### Business Logic Layer
-- **Scoring Agent**: LLM-based requirement evaluation
-- **Hard Gate**: Deterministic pass/reject logic
+- **Scoring Agent**: LLM-based requirement evaluation (Node 5)
+- **Hard Gate**: Hard Check #2 - deterministic pass/reject logic (Node 6)
+- **Formatter**: Basic output formatting (Node 7, inline)
 
 ### Infrastructure Layer
 - **LLM Adapter**: OpenRouter/OpenAI/Gemini integration with retry logic
 - **Rubric Loader**: YAML configuration loading
 
-## LangGraph Workflow DAG
+## LangGraph Workflow DAG (7 Nodes)
 
 ```
                     ┌─────────────────┐
@@ -76,41 +79,70 @@
                     └────────┬────────┘
                              │
                     ┌────────▼────────┐
-                    │ Input Guardrail │
-                    │  • Length check │
-                    │  • PII detection│
-                    │  • Injection    │
+                    │ 1. Guardrail    │
+                    │  • Length check  │
+                    │  • PII detection │
+                    │  • Injection     │
                     └────────┬────────┘
                              │
                     ┌────────▼────────┐
-                    │ Structuring     │
-                    │ Agent           │
+                    │ 2. Normalize    │
+                    │  (Schema valid.)│
+                    └────────┬────────┘
+                             │
+                    ┌────────▼────────┐
+                    │ 3. Structuring  │
+                    │    Agent        │
                     │  • Extract PRD  │
                     │  • Anti-halluc. │
                     └────────┬────────┘
                              │
                    ┌─────────┴─────────┐
-                   │                   │
-              Success              Failure
-                   │                   │
-                   └──────┬────────────┘
-                          │
-                 ┌────────▼────────┐
-                 │ Scoring Agent   │
-                 │  • Uses PRD or  │
-                 │    raw text     │
-                 └────────┬────────┘
-                          │
-                 ┌────────▼────────┐
-                 │   Hard Gate     │
-                 │  • Check score  │
-                 │  • Check blocks │
-                 └────────┬────────┘
-                          │
-                 ┌────────▼────────┐
-                 │      END        │
-                 └─────────────────┘
+              Success                Failure
+                   │                    │
+          ┌────────▼────────┐      [Fallback]
+          │ 4. Structure    │          │
+          │    Check        │          │
+          │  • AC count >=2 │          │
+          │  • User Story   │          │
+          │  • Title format │          │
+          └────────┬────────┘          │
+                   │                    │
+                   └────────┬─────────┘
+                            │
+                  ┌────────▼────────┐
+                  │ 5. Scoring Agent │
+                  │  • Uses PRD or   │
+                  │    raw text      │
+                  └────────┬────────┘
+                           │
+                  ┌────────▼────────┐
+                  │ 6. Hard Gate     │
+                  │  • Check score   │
+                  │  • Check blocks  │
+                  └────────┬────────┘
+                           │
+                  ┌────────▼────────┐
+                  │ 7. Formatter     │
+                  │  (Basic output)  │
+                  └────────┬────────┘
+                           │
+                  ┌────────▼────────┐
+                  │      END        │
+                  └─────────────────┘
 ```
+
+### Node Implementation Mapping
+
+| 白皮书节点 | 实现方式 | 文件位置 |
+|-----------|----------|----------|
+| 1. Input Guardrail | 独立节点 | `workflow/nodes/input_guardrail.py` |
+| 2. Normalize | Schema 验证 | `schemas/inputs.py` (RequirementPacket) |
+| 3. PRD Structuring | 独立节点 | `workflow/nodes/structuring_agent.py` |
+| 4. Hard Check #1 | 独立节点 | `workflow/nodes/structure_check.py` |
+| 5. Scoring Agent | 独立节点 | `agents/scoring.py` (wrapped) |
+| 6. Hard Check #2 | 独立节点 | `gates/decision.py` (wrapped) |
+| 7. Formatter | 内联实现 | `workflow/graph.py` (Phase 3 独立) |
 
 ## Data Flow
 
@@ -132,9 +164,12 @@ RequirementPacket → Guardrail → Structuring (fail) → raw_text → Scoring 
 | Component | Input | Output | Responsibility |
 |-----------|-------|--------|----------------|
 | Input Guardrail | Raw text | RequirementPacket | Validate length, detect PII, block prompt injection |
+| Normalize | Raw RequirementPacket | Validated RequirementPacket | Schema validation, data standardization |
 | Structuring Agent | RequirementPacket | PRD_Draft | Extract user story, AC, dependencies; identify gaps |
+| Structure Check | PRD_Draft | PRD_Draft + validation flags | Validate AC count >= 2, user story format, title |
 | Scoring Agent | PRD_Draft or RequirementPacket | TicketScoreReport | Evaluate quality against rubric |
 | Hard Gate | TicketScoreReport | GateDecision | Accept/reject based on score and blockers |
+| Formatter | All results | Final output | Format and package output (Phase 3: independent) |
 
 ## Configuration
 

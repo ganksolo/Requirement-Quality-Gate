@@ -106,3 +106,6 @@ Thumbs.db
 config/*.local.yaml
 *.sqlite
 *.db
+
+# Temporary sandbox for test documents (to be removed after launch)
+_sandbox/
